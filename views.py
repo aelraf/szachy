@@ -2,13 +2,11 @@
 # https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
 
 
-import abc
-
-
 class Field:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.letter_dictionary = {'A': 1, 'B': 2, 'C': 3, 'D': 4, "E": 5, "F": 6, 'G': 7, 'H': 8}
 
     def check_is_correct(self) -> bool:
         if 0 <= self.x <= 8 and 0 <= self.y <= 8:
@@ -16,24 +14,8 @@ class Field:
         else:
             return False
 
-    def change_to_numbers(self):
-        dictionary = {''}
+    def change_to_numbers(self, letter):
+        return self.letter_dictionary[letter]
 
 
-class Figure(abc.ABC):
-    """
-    metoda list_available_moves() zwraca dostęne ruchy
-    metoda validate_move(dest_field) informuje, czy ruch na wskazane pole jest możliwy
-    """
 
-    @abc.abstractmethod
-    def __init__(self, field):
-        self.field = field
-
-    @abc.abstractmethod
-    def list_available_moves(self):
-        pass
-
-    @abc.abstractmethod
-    def validate_move(self):
-        pass
