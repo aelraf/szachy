@@ -3,10 +3,11 @@ Prosta aplikacja RESTowa wspomagająca grę w szachy.
 
 # To Do:
 1) klasa abstrkacyjna Figure, posiadająca:
-  - kontruktor, przyjmujący jako pierwsz parametr pole, na którym znajduje się figura
+  - kontruktor, przyjmujący jako pierwszy parametr pole, na którym znajduje się figura
   - metodę publiczną 'list_available_moves()', wypisującą dozwolone ruchy z zajmowanego miejsca
   - metodę publiczną 'validate_move(dest_field)', informującą, czy możliwy jest ruch na wskazane pole
-  
+    (ok)  
+
 2) 6 klas reprezentujących figury szachowe ( lista figur: https://en.wikipedia.org/wiki/Chess_piece )
 
 3) implementacja algorytmów poruszania się danej figury (możliwe kombinacje ruchów: https://www.ichess.net/blog/chess-pieces-moves/)
