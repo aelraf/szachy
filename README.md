@@ -1,7 +1,7 @@
 # szachy
 Prosta aplikacja RESTowa wspomagająca grę w szachy.
 
-To Do:
+# To Do:
 1) klasa abstrkacyjna Figure, posiadająca:
   - kontruktor, przyjmujący jako pierwsz parametr pole, na którym znajduje się figura
   - metodę publiczną 'list_available_moves()', wypisującą dozwolone ruchy z zajmowanego miejsca
@@ -20,6 +20,16 @@ Uwaga - uwzględniamy tylko sekwencje poruszania, bez bicia!
   
 6) stworzenie prostej instrukcji umożliwiającej uruchomienie aplikacji
 
-7) testy jednostkowe
+7) testy jednostkowe 
 
 8) formatowanie z wykorzystaniem Black + sprawdzenie linterem flake8
+
+# Uwaga:
+Technologie do wykorzystania:
+- Python 3.6 - 3.9
+- Black (formatowanie)
+- Flake8 (linter)
+- Pytest (testy)
+- Flask 1.0+
+- ewentualne potrzebne zewnętrzne biblioteki
+
