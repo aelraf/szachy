@@ -16,22 +16,22 @@ class Field:
         self.is_black = is_black
 
     def check_is_correct(self) -> bool:
-        if 0 <= self.x <= 8 and 0 <= self.y <= 8:
+        if 1 <= self.x <= 8 and 1 <= self.y <= 8:
             return True
         else:
             return False
 
-    def change_to_numbers(self, letter):
+    def change_to_numbers(self, letter) -> int:
         return self.letter_dictionary[letter]
 
-    def change_to_letters(self, number):
-        number += 65
+    def change_to_letters(self, number) -> str:
+        number += 64
         letter = chr(number)
         return letter
 
-    def count_field_name(self):
+    def count_field_name(self) -> str:
         letter = self.change_to_letters(self.y)
-        return letter + self.x
+        return letter + str(self.x)
 
 
 class Figure(abc.ABC):

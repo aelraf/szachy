@@ -4,7 +4,7 @@
 from flask.testing import Client
 import pytest
 
-from models import Field
+from .models import Field
 
 
 class TestsModelFields:
