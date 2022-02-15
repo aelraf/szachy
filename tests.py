@@ -45,10 +45,42 @@ class TestsModelFields:
 
 
 class TestModelKing:
-    def test_king_init(self):
+    def get_king(self) -> King:
         field = Field(5, 1, is_empty=False, figure_code=100, is_black=False)
         king = King(field)
+
+        return king
+
+    def get_fieldset(self) -> list:
+        fieldset = []
+        for i in range(8):
+            for j in range(8):
+                fieldset.append(Field(i, j))
+        return fieldset
+
+    def test_king_init(self):
+        king = self.get_king()
 
         assert king.value == 100
         assert not king.field.is_empty
         assert king.field.field_name == 'A5'
+
+    def test_king_list_available_moves(self):
+        king = self.get_king()
+        # chess_fields = self.get_fieldset()
+
+        list_moves = king.list_available_moves()# chess_fields)
+        assert list_moves != []
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+        print("lista ruchów króla: {}".format(list_fields))
+
+        assert 'B5' in list_fields
+
+    def test_king_validate_move_good_field(self):
+        king = self.get_king()
+
+    def test_king_validate_move_bad_field(self):
+        king = self.get_king()
