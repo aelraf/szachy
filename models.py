@@ -4,13 +4,16 @@ import abc
 
 
 class Field:
-    def __init__(self, x, y, is_empty=True, figure_code=0):
+    def __init__(self, x, y, is_empty=True, figure_code=0, is_black=False):
         self.x = x
         self.y = y
         self.letter_dictionary = {'A': 1, 'B': 2, 'C': 3, 'D': 4, "E": 5, "F": 6, 'G': 7, 'H': 8}
+        self.field_name = self.count_field_name()
+
         self.is_empty = is_empty
         self.figure_code = figure_code
-        self.field_name = self.count_field_name()
+
+        self.is_black = is_black
 
     def check_is_correct(self) -> bool:
         if 0 <= self.x <= 8 and 0 <= self.y <= 8:
