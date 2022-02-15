@@ -187,10 +187,60 @@ class TestModelKing:
 
 class TestModelPawn:
     def get_pawn(self, is_black=False) -> Pawn:
-        field = Field(1, 7, is_empty=False, figure_code=1, is_black=is_black)
+        field = Field(1, 2, is_empty=False, figure_code=1, is_black=is_black)
         pawn = Pawn(field)
 
         return pawn
 
-    def get_pawn_init(self):
-        pass
+    def test_pawn_white_init(self):
+        pawn = self.get_pawn()
+
+        assert pawn.value == 1
+        assert not pawn.field.is_empty
+        assert pawn.field.field_name == 'B1'
+        assert not pawn.field.is_black
+
+    def test_pawn_white_list_available_moves(self):
+        pawn = self.get_pawn()
+
+        list_moves = pawn.list_available_moves()
+        assert list_moves != []
+
+        assert len(list_moves) == 1
+        assert list_moves[0].field_name == 'C1'
+
+    def test_pawn_black_list_available_moves(self):
+        pawn = self.get_pawn(is_black=True)
+
+        list_moves = pawn.list_available_moves()
+        assert list_moves != []
+
+        assert len(list_moves) == 1
+        assert list_moves[0].field_name == 'A1'
+
+    def test_pawn_white_available_moves_in_corner(self):
+        field = Field(8, 8, is_empty=False, figure_code=1, is_black=False)
+        pawn = Pawn(field)
+
+        list_moves = pawn.list_available_moves()
+        assert list_moves == []
+
+    def test_pawn_white_available_moves_on_middle(self):
+        field = Field(4, 4, is_empty=False, figure_code=1, is_black=False)
+        pawn = Pawn(field)
+
+        list_moves = pawn.list_available_moves()
+        assert list_moves != []
+
+        assert len(list_moves) == 1
+        assert list_moves[0].field_name == 'E4'
+
+    def test_pawn_black_available_moves_on_middle(self):
+        field = Field(4, 4, is_empty=False, figure_code=1, is_black=True)
+        pawn = Pawn(field)
+
+        list_moves = pawn.list_available_moves()
+        assert list_moves != []
+
+        assert len(list_moves) == 1
+        assert list_moves[0].field_name == 'C4'
