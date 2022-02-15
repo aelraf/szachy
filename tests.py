@@ -35,8 +35,8 @@ class TestsModelFields:
         assert field.check_is_correct()
         assert field.change_to_numbers('H') == 8
 
-        for i in range(1, 8):
-            for j in range(1, 8):
+        for i in range(1, 9):
+            for j in range(1, 9):
                 f2 = Field(i, j)
 
                 assert f2.check_is_correct()
@@ -53,8 +53,8 @@ class TestModelKing:
 
     def get_fieldset(self) -> list:
         fieldset = []
-        for i in range(8):
-            for j in range(8):
+        for i in range(1, 9):
+            for j in range(1, 9):
                 fieldset.append(Field(i, j))
         return fieldset
 
@@ -67,17 +67,50 @@ class TestModelKing:
 
     def test_king_list_available_moves(self):
         king = self.get_king()
-        # chess_fields = self.get_fieldset()
 
-        list_moves = king.list_available_moves()# chess_fields)
+        list_moves = king.list_available_moves()
         assert list_moves != []
 
         list_fields = []
         for field in list_moves:
             list_fields.append(field.field_name)
-        print("lista ruchów króla: {}".format(list_fields))
 
         assert 'B5' in list_fields
+        assert 'B4' in list_fields
+        assert 'B6' in list_fields
+        assert 'A4' in list_fields
+        assert 'A6' in list_fields
+        assert len(list_fields) == 5
+
+    def test_king_list_available_moves_in_corner(self):
+        field = Field(8, 8, is_empty=False, figure_code=100, is_black=False)
+        king = King(field)
+
+        list_moves = king.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'G7' in list_fields
+        assert 'G8' in list_fields
+        assert 'H7' in list_fields
+        assert len(list_fields) == 3
+
+    def test_king_list_available_moves_on_middle(self):
+        field = Field(4, 4, is_empty=False, figure_code=100, is_black=False)
+        king = King(field)
+
+        list_moves = king.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'C3' in list_fields
+        assert 'E4' in list_fields
+        assert 'D5' in list_fields
+        assert len(list_fields) == 8
 
     def test_king_validate_move_good_field(self):
         king = self.get_king()
