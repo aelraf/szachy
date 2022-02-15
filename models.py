@@ -73,9 +73,9 @@ class King(Figure):
             for j in range(y - 1, y + 2):
                 if 1 <= i <= 8 and 1 <= j <= 8 and (i != x or j != y):
                     try:
-                        if fields is not None and fields[x + y*8].is_empty:
+                        if fields is not None and fields[i + j*8].is_empty:
                             list_moves.append(Field(i, j))
-                        else:
+                        elif fields is None:
                             list_moves.append(Field(i, j))
                     except IndexError as err:
                         print('list_available_moves - Index Error: {}'.format(err))
@@ -148,8 +148,30 @@ class Pawn(Figure):
         super().__init__(field)
         self.value = 1
 
-    def list_available_moves(self):
-        pass
+    def list_available_moves(self, fields=None) -> list:
+        list_moves = []
+        x = self.field.x
+        y = self.field.y
 
-    def validate_move(self, dest_field):
-        pass
+        try:
+            if 0 < x <= 8 and 0 < y < 8:
+                if fields is not None and fields[x + y * 8].is_empty:
+                    list_moves.append(Field(x, y))
+                elif fields is None:
+                    list_moves.append(Field(x, y))
+        except IndexError as err:
+            print('list_available_moves - Index Error: {}'.format(err))
+            raise IndexError
+
+        return list_moves
+
+    def validate_move(self, dest_field, fields=None) -> bool:
+        moves = self.list_available_moves(fields=fields)
+
+        if not dest_field.is_empty:
+            return False
+
+        for move in moves:
+            if move.field_name == dest_field.field_name:
+                return True
+        return False
