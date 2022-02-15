@@ -10,7 +10,7 @@ class Field:
         :param y: numer kolumny
         :param is_empty: czy pole jest zajęte
         :param figure_code: 1, 3, 4, 5, 10, 100
-        :param is_black: czy figura zajmujca pole jest czarna
+        :param is_black: czy figura zajmująca pole jest czarna
         """
         self.x = x
         self.y = y
@@ -69,32 +69,27 @@ class King(Figure):
         list_moves = []
         x = self.field.x
         y = self.field.y
-        print('x= {}. y= {}'.format(x, y))
         for i in range(x - 1, x + 2):
             for j in range(y - 1, y + 2):
-                print('sprawdzamy: x={}, y={}'.format(i, j))
                 if 1 <= i <= 8 and 1 <= j <= 8 and (i != x or j != y):
-                    # print('sprawdzamy w warunku: x={}, y={}'.format(i, j))
-                    if fields is not None and fields[x + y*8].is_empty:
-                        # if fields[i - 1][j - 1].is_empty:
-                        #     list_moves.append(Field(i, j))
-                        list_moves.append(Field(i, j))
-                    else:
-                        list_moves.append(Field(i, j))
+                    try:
+                        if fields is not None and fields[x + y*8].is_empty:
+                            list_moves.append(Field(i, j))
+                        else:
+                            list_moves.append(Field(i, j))
+                    except IndexError as err:
+                        print('list_available_moves - Index Error: {}'.format(err))
+                        raise IndexError
 
-        print("lista ruchów króla: ")
-        for move in list_moves:
-            print(move.field_name)
         return list_moves
 
-    def validate_move(self, field) -> bool:
-        king = King(field)
-        moves = self.list_available_moves()
+    def validate_move(self, field, fields=None) -> bool:
+        moves = self.list_available_moves(fields=fields)
 
-        if field in moves:
-            return True
-        else:
-            return False
+        for move in moves:
+            if move.field_name == field.field_name:
+                return True
+        return False
 
 
 class Queen(Figure):
