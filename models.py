@@ -56,7 +56,7 @@ class Figure(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def validate_move(self, field):
+    def validate_move(self, dest_field):
         pass
 
 
@@ -83,11 +83,14 @@ class King(Figure):
 
         return list_moves
 
-    def validate_move(self, field, fields=None) -> bool:
+    def validate_move(self, dest_field, fields=None) -> bool:
         moves = self.list_available_moves(fields=fields)
 
+        if not dest_field.is_empty:
+            return False
+
         for move in moves:
-            if move.field_name == field.field_name:
+            if move.field_name == dest_field.field_name:
                 return True
         return False
 
@@ -100,7 +103,7 @@ class Queen(Figure):
     def list_available_moves(self):
         pass
 
-    def validate_move(self, field):
+    def validate_move(self, dest_field):
         pass
 
 
@@ -112,7 +115,7 @@ class Rook(Figure):
     def list_available_moves(self):
         pass
 
-    def validate_move(self, field):
+    def validate_move(self, dest_field):
         pass
 
 
@@ -124,7 +127,7 @@ class Bishop(Figure):
     def list_available_moves(self):
         pass
 
-    def validate_move(self, field):
+    def validate_move(self, dest_field):
         pass
 
 
@@ -136,7 +139,7 @@ class Knight(Figure):
     def list_available_moves(self):
         pass
 
-    def validate_move(self, field):
+    def validate_move(self, dest_field):
         pass
 
 
@@ -148,5 +151,5 @@ class Pawn(Figure):
     def list_available_moves(self):
         pass
 
-    def validate_move(self, field):
+    def validate_move(self, dest_field):
         pass

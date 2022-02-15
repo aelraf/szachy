@@ -6,7 +6,7 @@ import pytest
 from .models import Field, King
 
 
-def get_starting_chess(fields: list[Field]) -> list:
+def get_starting_chessboard(fields: list[Field]) -> list:
     for i in range(1, 17):
         fields[i].is_empty = False
         if i == 1 or i == 8:
@@ -87,7 +87,7 @@ class TestModelKing:
 
     def get_fieldset(self) -> list:
         """
-        zwraca zainicjowaną planszę, na której możemy modyfikować figury zajmujące okreslone miejsca
+        zwraca zainicjowaną planszę pól, na której możemy modyfikować figury zajmujące okreslone miejsca
         """
         fieldset = []
         for i in range(1, 9):
@@ -164,10 +164,22 @@ class TestModelKing:
         king = self.get_king()
         field = Field(4, 2, is_empty=True)
 
-        assert king.validate_move(field=field)
+        assert king.validate_move(dest_field=field)
 
     def test_king_validate_move_bad_field(self):
         king = self.get_king()
+        field = Field(10, 12, is_empty=True)
+
+        assert not king.validate_move(dest_field=field)
 
     def test_king_validate_move_not_empty_field(self):
         king = self.get_king()
+        field = Field(4, 2, is_empty=False)
+
+        assert not king.validate_move(dest_field=field)
+
+    def test_king_validate_move_bad_not_empty_field(self):
+        king = self.get_king()
+        field = Field(34, 34, is_empty=False)
+
+        assert not king.validate_move(dest_field=field)
