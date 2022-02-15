@@ -3,7 +3,7 @@
 
 import pytest
 
-from .models import Field, King
+from .models import Field, King, Pawn
 
 
 def get_starting_chessboard(fields: list[Field]) -> list:
@@ -183,3 +183,14 @@ class TestModelKing:
         field = Field(34, 34, is_empty=False)
 
         assert not king.validate_move(dest_field=field)
+
+
+class TestModelPawn:
+    def get_pawn(self, is_black=False) -> Pawn:
+        field = Field(1, 7, is_empty=False, figure_code=1, is_black=is_black)
+        pawn = Pawn(field)
+
+        return pawn
+
+    def get_pawn_init(self):
+        pass

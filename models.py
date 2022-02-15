@@ -155,10 +155,16 @@ class Pawn(Figure):
 
         try:
             if 0 < x <= 8 and 0 < y < 8:
-                if fields is not None and fields[x + y * 8].is_empty:
-                    list_moves.append(Field(x, y))
-                elif fields is None:
-                    list_moves.append(Field(x, y))
+                if not self.field.is_black:
+                    if fields is not None and fields[x + (y + 1) * 8].is_empty:
+                        list_moves.append(Field(x, y + 1))
+                    elif fields is None:
+                        list_moves.append(Field(x, y + 1))
+                else:
+                    if fields is not None and fields[x + (y - 1) * 8].is_empty:
+                        list_moves.append(Field(x, y - 1))
+                    elif fields is None:
+                        list_moves.append(Field(x, y - 1))
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
             raise IndexError
