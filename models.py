@@ -73,6 +73,7 @@ def moves_left(x: int, y: int, fields=None) -> list:
                     list_moves.append(Field(i, y))
                 elif fields is not None and not fields[i + y * 8].is_empty:
                     break
+        # list_moves += moves_line(x=x, y=y, p1=x-1, p2=0, p3=-1, p4=0, p5=1)
     except IndexError as err:
         print('moves_left - Index Error: {}'.format(err))
         raise IndexError
@@ -140,8 +141,28 @@ def moves_down(x: int, y: int, fields=None) -> list:
     return list_moves
 
 
-def moves_line(x: int, y: int, p1: int, p2: int, fields=None) -> list:
+def moves_line(x: int, y: int, p1: int, p2: int, p3: int, p4: int, p5: int, fields=None) -> list:
+    """
+    x i y to współrzędne sprawdzanego punku, p1 pilnuje początku pętli,
+    p2 jej końca, a p3 kroku iteracji,
+    p4 i p5 przyjmują wartości {-1, 0, 1}, kontrolując przebieg x i y
+    """
+
     list_moves = []
+
+    try:
+        for i in range(p1, p2, p3):
+            if 1 <= x <= 8 and 1 <= i <= 8:
+                print("ruchy wieży w górę: {} {}".format(x + p4 * i, y + p5 * i))
+                if fields is not None and fields[x + i * 8].is_empty:
+                    list_moves.append(Field(x + p4 * i, y + p5 * i))
+                elif fields is None:
+                    list_moves.append(Field(x + p4 * i, y + p5 * i))
+                elif fields is not None and not fields[x * p4 + y * p5 + i * 8].is_empty:
+                    break
+    except IndexError as err:
+        print('moves_up - Index Error: {}'.format(err))
+        raise IndexError
 
     return list_moves
 
@@ -276,69 +297,13 @@ class Bishop(Figure):
 
         try:
             print('lewo góra: ')
-            # for i in range(1, 8):
-            #     yk = y + i
-            #     xk = x - i
-            #     print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
-            #     if 1 <= xk <= 8 and 1 <= yk <= 8:
-            #         if fields is not None and fields[xk + yk * 8].is_empty:
-            #             list_moves.append(Field(xk, yk))
-            #         elif fields is None:
-            #             list_moves.append(Field(xk, yk))
-            #         elif fields is not None and not fields[xk + yk * 8].is_empty:
-            #             break
-            #     if xk < 1 or yk < 1:
-            #         break
             list_moves += moves_oblique(x=x, y=y, p1=1, p2=-1, fields=fields)
-
             print("prawo góra: ")
-            # for i in range(1, 8):
-            #     yk = y + i
-            #     xk = x + i
-            #     print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
-            #     if 1 <= xk <= 8 and 1 <= yk <= 8:
-            #         if fields is not None and fields[xk + yk * 8].is_empty:
-            #             list_moves.append(Field(xk, yk))
-            #         elif fields is None:
-            #             list_moves.append(Field(xk, yk))
-            #         elif fields is not None and not fields[xk + yk * 8].is_empty:
-            #             break
-            #     if xk < 1 or yk < 1:
-            #         break
             list_moves += moves_oblique(x=x, y=y, p1=1, p2=1, fields=fields)
-
             print('lewo dół: ')
-            # for i in range(1, 8):
-            #     yk = y - i
-            #     xk = x - i
-            #     print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
-            #     if 1 <= xk <= 8 and 1 <= yk <= 8:
-            #         if fields is not None and fields[xk + yk * 8].is_empty:
-            #             list_moves.append(Field(xk, yk))
-            #         elif fields is None:
-            #             list_moves.append(Field(xk, yk))
-            #         elif fields is not None and not fields[xk + yk * 8].is_empty:
-            #             break
-            #     if xk < 1 or yk < 1:
-            #         break
             list_moves += moves_oblique(x=x, y=y, p1=-1, p2=-1, fields=fields)
-
             print('prawo dół: ')
-            # for i in range(1, 8):
-            #     yk = y - i
-            #     xk = x + i
-            #     print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
-            #     if 1 <= xk <= 8 and 1 <= yk <= 8:
-            #         if fields is not None and fields[xk + yk * 8].is_empty:
-            #             list_moves.append(Field(xk, yk))
-            #         elif fields is None:
-            #             list_moves.append(Field(xk, yk))
-            #         elif fields is not None and not fields[xk + yk * 8].is_empty:
-            #             break
-            #     if xk < 1 or yk < 1:
-            #         break
             list_moves += moves_oblique(x=x, y=y, p1=-1, p2=1, fields=fields)
-
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
             raise IndexError
