@@ -259,7 +259,7 @@ class TestModelPawn:
 
         assert pawn.validate_move(dest_field=field)
 
-    def test_king_validate_move_bad_field(self):
+    def test_pawn_validate_move_bad_field(self):
         pawn = self.get_pawn()
         field = Field(10, 12, is_empty=True)
 
@@ -303,3 +303,26 @@ class TestModelRook:
         assert 'A8' in list_moves
         assert 'H1' in list_moves
 
+    def test_rook_validate_good_field(self):
+        rook = self.get_rook()
+        field = Field(1, 8, is_empty=True)
+
+        assert rook.validate_move(dest_field=field)
+
+    def test_rook_validate_move_bad_field(self):
+        rook = self.get_rook()
+        field = Field(10, 12, is_empty=True)
+
+        assert not rook.validate_move(dest_field=field)
+
+    def test_pawn_validate_move_not_empty_field(self):
+        rook = self.get_rook()
+        field = Field(4, 2, is_empty=False)
+
+        assert not rook.validate_move(dest_field=field)
+
+    def test_pawn_validate_move_bad_not_empty_field(self):
+        rook = self.get_rook()
+        field = Field(34, 34, is_empty=False)
+
+        assert not rook.validate_move(dest_field=field)
