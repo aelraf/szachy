@@ -7,6 +7,7 @@ from .models import Field, King, Pawn, Rook, Bishop
 
 
 def get_starting_chessboard(fields: list[Field]) -> list:
+    print('dlugosc listy: {}'.format(len(fields)))
     for i in range(1, 17):
         fields[i].is_empty = False
         if i == 1 or i == 8:
@@ -23,6 +24,7 @@ def get_starting_chessboard(fields: list[Field]) -> list:
             fields[i].figure_code = 1
 
     for i in range(48, 65):
+        print(i)
         fields[i].is_empty = False
         fields[i].is_black = True
         if i == 57 or i == 64:
@@ -420,6 +422,60 @@ class TestModelBishop:
         assert 'F8' in list_fields
 
         assert len(list_fields) == 7
+
+    def test_bishop_available_moves_in_corner(self):
+        bishop = self.get_bishop(8, 8)
+        list_moves = bishop.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'G7' in list_fields
+        assert 'D4' in list_fields
+        assert 'A1' in list_fields
+        assert len(list_fields) == 7
+
+        bishop = self.get_bishop(1, 8)
+        list_moves = bishop.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'G2' in list_fields
+        assert 'A8' in list_fields
+        assert 'C6' in list_fields
+        assert len(list_fields) == 7
+
+    def test_bishop_available_moves_on_middle(self):
+        bishop = self.get_bishop(4, 4)
+        list_moves = bishop.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'G1' in list_fields
+        assert 'D4' not in list_fields
+        assert 'A7' in list_fields
+        assert 'A1' in list_fields
+        assert 'G7' in list_fields
+        assert len(list_fields) == 13
+
+    def test_bishop_list_moves_with_bad_parameter(self):
+        bishop = self.get_bishop(3, 1)
+        fieldset = [Field(4, 1, is_empty=False), Field(6, 1, is_empty=False)]
+
+        with pytest.raises(IndexError):
+            bishop.list_available_moves(fields=fieldset)
+
+    def test_bisop_list_moves_with_good_parameter(self):
+        bishop = self.get_bishop(3, 1)
+        fieldset = get_starting_chessboard(get_fieldset())
+
+        list_moves = bishop.list_available_moves(fields=fieldset)
+        assert list_moves != []
 
     def test_bishop_validate_move_good_field(self):
         bishop = self.get_bishop(3, 1)
