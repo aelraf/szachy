@@ -13,7 +13,7 @@ names = {
 
 
 class HelloWorld(Resource):
-    def get(self, name, test):
+    def get(self, name, test=0):
         # return {'data': name, "test": test}
         return names[name]
 
@@ -21,8 +21,21 @@ class HelloWorld(Resource):
         return {'data': "Posted"}
 
 
-#api.add_resource(HelloWorld, "/helloworld/<string:name>/<int:test>")
+videos = {}
+
+
+class Video(Resource):
+    def get(self, video_id):
+        return videos[video_id]
+
+    def put(self, video_id):
+
+        pass
+
+
+# api.add_resource(HelloWorld, "/helloworld/<string:name>/<int:test>")
 api.add_resource(HelloWorld, "/helloworld/<string:name>")
+api.add_resource(Video, "/video/<int:video_id>")
 
 
 if __name__ == "__main__":
