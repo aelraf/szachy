@@ -3,7 +3,7 @@
 
 import pytest
 
-from .models import Field, King, Pawn
+from .models import Field, King, Pawn, Rook
 
 
 def get_starting_chessboard(fields: list[Field]) -> list:
@@ -39,6 +39,17 @@ def get_starting_chessboard(fields: list[Field]) -> list:
             fields[i].figure_code = 1
 
     return fields
+
+
+def get_fieldset() -> list:
+    """
+    zwraca zainicjowaną planszę pól, na której możemy modyfikować figury zajmujące okreslone miejsca
+    """
+    fieldset = []
+    for i in range(1, 9):
+        for j in range(1, 9):
+            fieldset.append(Field(i, j))
+    return fieldset
 
 
 class TestsModelFields:
@@ -84,16 +95,6 @@ class TestModelKing:
         king = King(field)
 
         return king
-
-    def get_fieldset(self) -> list:
-        """
-        zwraca zainicjowaną planszę pól, na której możemy modyfikować figury zajmujące okreslone miejsca
-        """
-        fieldset = []
-        for i in range(1, 9):
-            for j in range(1, 9):
-                fieldset.append(Field(i, j))
-        return fieldset
 
     def test_king_init(self):
         king = self.get_king()
@@ -275,4 +276,30 @@ class TestModelPawn:
         field = Field(34, 34, is_empty=False)
 
         assert not pawn.validate_move(dest_field=field)
+
+
+class TestModelRook:
+    def get_rook(self) -> Rook:
+        field = Field(1, 1, is_empty=False, figure_code=5, is_black=False)
+        rook = Rook(field)
+
+        return rook
+
+    def test_rook_init(self):
+        rook = self.get_rook()
+
+        assert rook.value == 5
+        assert not rook.field.is_empty
+        assert rook.field.field_name == "A1"
+
+    def test_rook_list_available_moves(self):
+        rook = self.get_rook()
+
+        list_moves = rook.list_available_moves()
+        assert list_moves != []
+
+        assert len(list_moves) == 14
+        assert 'C1' in list_moves
+        assert 'A8' in list_moves
+        assert 'H1' in list_moves
 
