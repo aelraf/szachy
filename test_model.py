@@ -167,6 +167,12 @@ class TestModelKing:
 
         assert king.validate_move(dest_field=field)
 
+    def test_king_validate_not_straight_field(self):
+        king = self.get_king()
+        field = Field(4, 3, is_empty=True)
+
+        assert not king.validate_move(dest_field=field)
+
     def test_king_validate_move_bad_field(self):
         king = self.get_king()
         field = Field(10, 12, is_empty=True)
@@ -258,6 +264,12 @@ class TestModelPawn:
         field = Field(1, 3, is_empty=True)
 
         assert pawn.validate_move(dest_field=field)
+
+    def test_pawn_validate_not_straight_field(self):
+        pawn = self.get_pawn()
+        field = Field(2, 3, is_empty=True)
+
+        assert not pawn.validate_move(dest_field=field)
 
     def test_pawn_validate_move_bad_field(self):
         pawn = self.get_pawn()
@@ -353,6 +365,12 @@ class TestModelRook:
         field = Field(1, 8, is_empty=True)
 
         assert rook.validate_move(dest_field=field)
+
+    def test_rook_validate_not_straight_field(self):
+        rook = self.get_rook()
+        field = Field(2, 8, is_empty=True)
+
+        assert not rook.validate_move(dest_field=field)
 
     def test_rook_validate_move_bad_field(self):
         rook = self.get_rook()
