@@ -233,6 +233,32 @@ class Bishop(Figure):
     def list_available_moves(self, fields=None) -> list:
         list_moves = []
 
+        x = self.field.x
+        y = self.field.y
+
+        try:
+            print('lewo góra: ')
+            for i in range(1, 8):
+                yk = y + i
+                xk = x - i
+                print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
+                if 1 <= xk <= 8 and 1 <= yk <= 8:
+                    if fields is not None and fields[xk + yk * 8].is_empty:
+                        list_moves.append(Field(xk, yk))
+                    elif fields is None:
+                        list_moves.append(Field(xk, yk))
+                    elif fields is not None and not fields[xk + yk * 8].is_empty:
+                        break
+                if xk < 1 or yk < 1:
+                    break
+
+        except IndexError as err:
+            print('list_available_moves - Index Error: {}'.format(err))
+            raise IndexError
+
+        for move in list_moves:
+            print(move.field_name)
+
         return list_moves
 
     def validate_move(self, dest_field, fields=None) -> bool:
