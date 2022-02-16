@@ -140,6 +140,44 @@ def moves_down(x: int, y: int, fields=None) -> list:
     return list_moves
 
 
+def moves_line(x: int, y: int, p1: int, p2: int, fields=None) -> list:
+    list_moves = []
+
+    return list_moves
+
+
+def moves_oblique(x: int, y: int, p1: int, p2: int, fields=None) -> list:
+    """
+    wszystkie ruchy skośne w jednej metodzie
+
+    p1 - znak przy przesuwaniu y
+    p2 - znak przy przesuwaniu x
+
+    :return: listę pól osiągalnych ze startowego
+    """
+    list_moves = []
+
+    try:
+        for i in range(1, 8):
+            yk = y + p1 * i
+            xk = x + p2 * i
+            print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
+            if 1 <= xk <= 8 and 1 <= yk <= 8:
+                if fields is not None and fields[(xk-1) + (yk-1) * 8].is_empty:
+                    list_moves.append(Field(xk, yk))
+                elif fields is None:
+                    list_moves.append(Field(xk, yk))
+                elif fields is not None and not fields[(xk-1) + (yk-1) * 8].is_empty:
+                    break
+            if xk < 1 or yk < 1:
+                break
+    except IndexError as err:
+        print('list_available_moves - Index Error: {}'.format(err))
+        raise IndexError
+
+    return list_moves
+
+
 class King(Figure):
     def __init__(self, field):
         super().__init__(field)
@@ -238,63 +276,68 @@ class Bishop(Figure):
 
         try:
             print('lewo góra: ')
-            for i in range(1, 8):
-                yk = y + i
-                xk = x - i
-                print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
-                if 1 <= xk <= 8 and 1 <= yk <= 8:
-                    if fields is not None and fields[xk + yk * 8].is_empty:
-                        list_moves.append(Field(xk, yk))
-                    elif fields is None:
-                        list_moves.append(Field(xk, yk))
-                    elif fields is not None and not fields[xk + yk * 8].is_empty:
-                        break
-                if xk < 1 or yk < 1:
-                    break
+            # for i in range(1, 8):
+            #     yk = y + i
+            #     xk = x - i
+            #     print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
+            #     if 1 <= xk <= 8 and 1 <= yk <= 8:
+            #         if fields is not None and fields[xk + yk * 8].is_empty:
+            #             list_moves.append(Field(xk, yk))
+            #         elif fields is None:
+            #             list_moves.append(Field(xk, yk))
+            #         elif fields is not None and not fields[xk + yk * 8].is_empty:
+            #             break
+            #     if xk < 1 or yk < 1:
+            #         break
+            list_moves += moves_oblique(x=x, y=y, p1=1, p2=-1, fields=fields)
+
             print("prawo góra: ")
-            for i in range(1, 8):
-                yk = y + i
-                xk = x + i
-                print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
-                if 1 <= xk <= 8 and 1 <= yk <= 8:
-                    if fields is not None and fields[xk + yk * 8].is_empty:
-                        list_moves.append(Field(xk, yk))
-                    elif fields is None:
-                        list_moves.append(Field(xk, yk))
-                    elif fields is not None and not fields[xk + yk * 8].is_empty:
-                        break
-                if xk < 1 or yk < 1:
-                    break
+            # for i in range(1, 8):
+            #     yk = y + i
+            #     xk = x + i
+            #     print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
+            #     if 1 <= xk <= 8 and 1 <= yk <= 8:
+            #         if fields is not None and fields[xk + yk * 8].is_empty:
+            #             list_moves.append(Field(xk, yk))
+            #         elif fields is None:
+            #             list_moves.append(Field(xk, yk))
+            #         elif fields is not None and not fields[xk + yk * 8].is_empty:
+            #             break
+            #     if xk < 1 or yk < 1:
+            #         break
+            list_moves += moves_oblique(x=x, y=y, p1=1, p2=1, fields=fields)
 
             print('lewo dół: ')
-            for i in range(1, 8):
-                yk = y - i
-                xk = x - i
-                print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
-                if 1 <= xk <= 8 and 1 <= yk <= 8:
-                    if fields is not None and fields[xk + yk * 8].is_empty:
-                        list_moves.append(Field(xk, yk))
-                    elif fields is None:
-                        list_moves.append(Field(xk, yk))
-                    elif fields is not None and not fields[xk + yk * 8].is_empty:
-                        break
-                if xk < 1 or yk < 1:
-                    break
+            # for i in range(1, 8):
+            #     yk = y - i
+            #     xk = x - i
+            #     print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
+            #     if 1 <= xk <= 8 and 1 <= yk <= 8:
+            #         if fields is not None and fields[xk + yk * 8].is_empty:
+            #             list_moves.append(Field(xk, yk))
+            #         elif fields is None:
+            #             list_moves.append(Field(xk, yk))
+            #         elif fields is not None and not fields[xk + yk * 8].is_empty:
+            #             break
+            #     if xk < 1 or yk < 1:
+            #         break
+            list_moves += moves_oblique(x=x, y=y, p1=-1, p2=-1, fields=fields)
 
             print('prawo dół: ')
-            for i in range(1, 8):
-                yk = y - i
-                xk = x + i
-                print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
-                if 1 <= xk <= 8 and 1 <= yk <= 8:
-                    if fields is not None and fields[xk + yk * 8].is_empty:
-                        list_moves.append(Field(xk, yk))
-                    elif fields is None:
-                        list_moves.append(Field(xk, yk))
-                    elif fields is not None and not fields[xk + yk * 8].is_empty:
-                        break
-                if xk < 1 or yk < 1:
-                    break
+            # for i in range(1, 8):
+            #     yk = y - i
+            #     xk = x + i
+            #     print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
+            #     if 1 <= xk <= 8 and 1 <= yk <= 8:
+            #         if fields is not None and fields[xk + yk * 8].is_empty:
+            #             list_moves.append(Field(xk, yk))
+            #         elif fields is None:
+            #             list_moves.append(Field(xk, yk))
+            #         elif fields is not None and not fields[xk + yk * 8].is_empty:
+            #             break
+            #     if xk < 1 or yk < 1:
+            #         break
+            list_moves += moves_oblique(x=x, y=y, p1=-1, p2=1, fields=fields)
 
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
