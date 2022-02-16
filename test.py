@@ -14,6 +14,9 @@ print(response.json())
 # response = requests.post(BASE + "helloworld")
 # print(response.json())
 
-response = requests.put(BASE + "helloworld/bill", {})
+response = requests.put(BASE + "video/1", {"likes": 10, "name": "Tim", "views": 100000})
 print(response.json())
 
+input()
+response = requests.get(BASE + "video/6")
+print(response.json())
