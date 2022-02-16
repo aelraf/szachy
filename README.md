@@ -1,12 +1,12 @@
 # szachy
 Prosta aplikacja RESTowa wspomagająca grę w szachy.
 
-# To Do:
+# Opis:
 1) klasa abstrkacyjna Figure, posiadająca:
   - kontruktor, przyjmujący jako pierwszy parametr pole, na którym znajduje się figura
   - metodę publiczną 'list_available_moves()', wypisującą dozwolone ruchy z zajmowanego miejsca
   - metodę publiczną 'validate_move(dest_field)', informującą, czy możliwy jest ruch na wskazane pole
-    (ok)  
+    
 
 2) 6 klas reprezentujących figury szachowe ( lista figur: https://en.wikipedia.org/wiki/Chess_piece )
 
@@ -24,6 +24,14 @@ Uwaga - uwzględniamy tylko sekwencje poruszania, bez bicia!
 7) testy jednostkowe 
 
 8) formatowanie z wykorzystaniem Black + sprawdzenie linterem flake8
+
+# To do
+- algorytm poruszania się Skoczka, Gońca i Hetmana
+- API wystawiające URLe
+- instrukcja uruchomienia
+- formatowanie z wykorzystaniem Black
+- sprawdzenie linterem flake8
+
 
 # Uwaga:
 Technologie do wykorzystania:
