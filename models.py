@@ -112,11 +112,69 @@ class Rook(Figure):
         super().__init__(field)
         self.value = 5
 
-    def list_available_moves(self):
-        pass
+    def list_available_moves(self, fields=None) -> list:
+        list_moves = []
+        x = self.field.x
+        y = self.field.y
 
-    def validate_move(self, dest_field):
-        pass
+        print("początkowa lokalizacja wieży: {}, {}".format(x, y))
+        try:
+            for i in range(x-1, 1, -1):
+                if 1 <= i <= 8 and 1 <= y <= 8:
+                    print("ruchy wieży w lewo: {} {}".format(i, y))
+                    if fields is not None and fields[i + y*8].is_empty:
+                        list_moves.append(Field(i, y))
+                    elif fields is None:
+                        list_moves.append(Field(i, y))
+                    elif fields is not None and not fields[i + y*8].is_empty:
+                        break
+
+            for i in range(x+1, 9):
+                if 1 <= i <= 8 and 1 <= y <= 8:
+                    print("ruchy wieży w prawo: {} {}".format(i, y))
+                    if fields is not None and fields[i + y*8].is_empty:
+                        list_moves.append(Field(i, y))
+                    elif fields is None:
+                        list_moves.append(Field(i, y))
+                    elif fields is not None and not fields[i + y*8].is_empty:
+                        break
+
+            for j in range(y-1, 1, -1):
+                if 1 <= x <= 8 and 1 <= j <= 8:
+                    print("ruchy wieży w dół: {} {}".format(x, j))
+                    if fields is not None and fields[x + j*8].is_empty:
+                        list_moves.append(Field(x, j))
+                    elif fields is None:
+                        list_moves.append(Field(x, j))
+                    elif fields is not None and not fields[x + j*8].is_empty:
+                        break
+
+            for j in range(y+1, 9):
+                if 1 <= x <= 8 and 1 <= j <= 8:
+                    print("ruchy wieży w górę: {} {}".format(x, j))
+                    if fields is not None and fields[x + j*8].is_empty:
+                        list_moves.append(Field(x, j))
+                    elif fields is None:
+                        list_moves.append(Field(x, j))
+                    elif fields is not None and not fields[x + j*8].is_empty:
+                        break
+
+        except IndexError as err:
+            print('list_available_moves - Index Error: {}'.format(err))
+            raise IndexError
+
+        return list_moves
+
+    def validate_move(self, dest_field, fields=None):
+        moves = self.list_available_moves(fields=fields)
+
+        if not dest_field.is_empty:
+            return False
+
+        for move in moves:
+            if move.field_name == dest_field.field_name:
+                return True
+        return False
 
 
 class Bishop(Figure):
