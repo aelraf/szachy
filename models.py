@@ -60,6 +60,86 @@ class Figure(abc.ABC):
         pass
 
 
+def moves_left(x: int, y: int, fields=None) -> list:
+    list_moves = []
+
+    try:
+        for i in range(x - 1, 0, -1):
+            if 1 <= i <= 8 and 1 <= y <= 8:
+                print("ruchy wieży w lewo: {} {}".format(i, y))
+                if fields is not None and fields[i + y * 8].is_empty:
+                    list_moves.append(Field(i, y))
+                elif fields is None:
+                    list_moves.append(Field(i, y))
+                elif fields is not None and not fields[i + y * 8].is_empty:
+                    break
+    except IndexError as err:
+            print('moves_left - Index Error: {}'.format(err))
+            raise IndexError
+
+    return list_moves
+
+
+def moves_right(x: int, y: int, fields=None) -> list:
+    list_moves = []
+
+    try:
+        for i in range(x + 1, 9):
+            if 1 <= i <= 8 and 1 <= y <= 8:
+                print("ruchy wieży w prawo: {} {}".format(i, y))
+                if fields is not None and fields[i + y * 8].is_empty:
+                    list_moves.append(Field(i, y))
+                elif fields is None:
+                    list_moves.append(Field(i, y))
+                elif fields is not None and not fields[i + y * 8].is_empty:
+                    break
+    except IndexError as err:
+            print('moves_right - Index Error: {}'.format(err))
+            raise IndexError
+
+    return list_moves
+
+
+def moves_up(x: int, y: int, fields=None) -> list:
+    list_moves = []
+
+    try:
+        for j in range(y + 1, 9):
+            if 1 <= x <= 8 and 1 <= j <= 8:
+                print("ruchy wieży w górę: {} {}".format(x, j))
+                if fields is not None and fields[x + j * 8].is_empty:
+                    list_moves.append(Field(x, j))
+                elif fields is None:
+                    list_moves.append(Field(x, j))
+                elif fields is not None and not fields[x + j * 8].is_empty:
+                    break
+    except IndexError as err:
+            print('moves_up - Index Error: {}'.format(err))
+            raise IndexError
+
+    return list_moves
+
+
+def moves_down(x: int, y: int, fields=None) -> list:
+    list_moves = []
+
+    try:
+        for j in range(y - 1, 0, -1):
+            if 1 <= x <= 8 and 1 <= j <= 8:
+                print("ruchy wieży w dół: {} {}".format(x, j))
+                if fields is not None and fields[x + j * 8].is_empty:
+                    list_moves.append(Field(x, j))
+                elif fields is None:
+                    list_moves.append(Field(x, j))
+                elif fields is not None and not fields[x + j * 8].is_empty:
+                    break
+    except IndexError as err:
+            print('moves_down - Index Error: {}'.format(err))
+            raise IndexError
+
+    return list_moves
+
+
 class King(Figure):
     def __init__(self, field):
         super().__init__(field)
