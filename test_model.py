@@ -244,3 +244,35 @@ class TestModelPawn:
 
         assert len(list_moves) == 1
         assert list_moves[0].field_name == 'C4'
+
+    def test_pawn_moves_with_bad_parameter(self):
+        pawn = self.get_pawn()
+        fieldset = [Field(1, 3, is_empty=False), Field(1, 4, is_empty=False)]
+
+        with pytest.raises(IndexError):
+            pawn.list_available_moves(fields=fieldset)
+
+    def test_pawn_validate_move_good_field(self):
+        pawn = self.get_pawn()
+        field = Field(1, 3, is_empty=True)
+
+        assert pawn.validate_move(dest_field=field)
+
+    def test_king_validate_move_bad_field(self):
+        pawn = self.get_pawn()
+        field = Field(10, 12, is_empty=True)
+
+        assert not pawn.validate_move(dest_field=field)
+
+    def test_pawn_validate_move_not_empty_field(self):
+        pawn = self.get_pawn()
+        field = Field(4, 2, is_empty=False)
+
+        assert not pawn.validate_move(dest_field=field)
+
+    def test_pawn_validate_move_bad_not_empty_field(self):
+        pawn = self.get_pawn()
+        field = Field(34, 34, is_empty=False)
+
+        assert not pawn.validate_move(dest_field=field)
+
