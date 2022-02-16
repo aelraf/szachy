@@ -223,10 +223,10 @@ class King(Figure):
         return list_moves
 
     def validate_move(self, dest_field, fields=None) -> bool:
-        moves = self.list_available_moves(fields=fields)
-
         if not dest_field.is_empty:
             return False
+
+        moves = self.list_available_moves(fields=fields)
 
         for move in moves:
             if move.field_name == dest_field.field_name:
@@ -239,11 +239,20 @@ class Queen(Figure):
         super().__init__(field)
         self.value = 10
 
-    def list_available_moves(self):
-        pass
+    def list_available_moves(self, fields=None) -> list:
+        list_moves = []
+        return list_moves
 
-    def validate_move(self, dest_field):
-        pass
+    def validate_move(self, dest_field, fields=None) -> bool:
+        if not dest_field.is_empty:
+            return False
+
+        moves = self.list_available_moves(fields=fields)
+
+        for move in moves:
+            if move.field_name == dest_field.field_name:
+                return True
+        return False
 
 
 class Rook(Figure):
@@ -273,10 +282,10 @@ class Rook(Figure):
         return list_moves
 
     def validate_move(self, dest_field, fields=None) -> bool:
-        moves = self.list_available_moves(fields=fields)
-
         if not dest_field.is_empty:
             return False
+
+        moves = self.list_available_moves(fields=fields)
 
         for move in moves:
             if move.field_name == dest_field.field_name:
@@ -314,10 +323,10 @@ class Bishop(Figure):
         return list_moves
 
     def validate_move(self, dest_field, fields=None) -> bool:
-        moves = self.list_available_moves(fields=fields)
-
         if not dest_field.is_empty:
             return False
+
+        moves = self.list_available_moves(fields=fields)
 
         for move in moves:
             if move.field_name == dest_field.field_name:
@@ -336,10 +345,10 @@ class Knight(Figure):
         return list_moves
 
     def validate_move(self, dest_field, fields=None) -> bool:
-        moves = self.list_available_moves(fields=fields)
-
         if not dest_field.is_empty:
             return False
+
+        moves = self.list_available_moves(fields=fields)
 
         for move in moves:
             if move.field_name == dest_field.field_name:
@@ -376,10 +385,10 @@ class Pawn(Figure):
         return list_moves
 
     def validate_move(self, dest_field, fields=None) -> bool:
-        moves = self.list_available_moves(fields=fields)
-
         if not dest_field.is_empty:
             return False
+
+        moves = self.list_available_moves(fields=fields)
 
         for move in moves:
             if move.field_name == dest_field.field_name:
