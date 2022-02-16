@@ -3,7 +3,7 @@
 
 import pytest
 
-from .models import Field, King, Pawn, Rook
+from .models import Field, King, Pawn, Rook, Bishop
 
 
 def get_starting_chessboard(fields: list[Field]) -> list:
@@ -389,3 +389,65 @@ class TestModelRook:
         field = Field(34, 34, is_empty=False)
 
         assert not rook.validate_move(dest_field=field)
+
+
+class TestModelBishop:
+    def get_bishop(self, x, y) -> Bishop:
+        field = Field(x=x, y=y, is_empty=False, figure_code=4)
+        bishop = Bishop(field)
+
+        return bishop
+
+    def test_bishop_init(self):
+        bishop = self.get_bishop(3, 1)
+
+        assert bishop.value == 4
+        assert not bishop.field.is_empty
+        assert bishop.field.field_name == 'A3'
+
+    def test_bishop_available_moves(self):
+        bishop = self.get_bishop(3, 1)
+
+        list_moves = bishop.list_available_moves()
+        assert list_moves != []
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'C1' in list_fields
+        assert 'B4' in list_fields
+        assert 'F8' in list_fields
+
+        assert len(list_fields) == 7
+
+    def test_bishop_validate_move_good_field(self):
+        bishop = self.get_bishop(3, 1)
+        field = Field(4, 2, is_empty=True)
+
+        assert bishop.validate_move(dest_field=field)
+
+    def test_bishop_validate_not_straight_field(self):
+        bishop = self.get_bishop(3, 1)
+        field = Field(4, 3, is_empty=True)
+
+        assert not bishop.validate_move(dest_field=field)
+
+    def test_bishop_validate_move_bad_field(self):
+        bishop = self.get_bishop(3, 1)
+        field = Field(10, 12, is_empty=True)
+
+        assert not bishop.validate_move(dest_field=field)
+
+    def test_bishop_validate_move_not_empty_field(self):
+        bishop = self.get_bishop(3, 1)
+        field = Field(4, 2, is_empty=False)
+
+        assert not bishop.validate_move(dest_field=field)
+
+    def test_bishop_validate_move_bad_not_empty_field(self):
+        bishop = self.get_bishop(3, 1)
+        field = Field(34, 34, is_empty=False)
+
+        assert not bishop.validate_move(dest_field=field)
+
