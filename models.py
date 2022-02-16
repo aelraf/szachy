@@ -74,8 +74,8 @@ def moves_left(x: int, y: int, fields=None) -> list:
                 elif fields is not None and not fields[i + y * 8].is_empty:
                     break
     except IndexError as err:
-            print('moves_left - Index Error: {}'.format(err))
-            raise IndexError
+        print('moves_left - Index Error: {}'.format(err))
+        raise IndexError
 
     return list_moves
 
@@ -94,8 +94,8 @@ def moves_right(x: int, y: int, fields=None) -> list:
                 elif fields is not None and not fields[i + y * 8].is_empty:
                     break
     except IndexError as err:
-            print('moves_right - Index Error: {}'.format(err))
-            raise IndexError
+        print('moves_right - Index Error: {}'.format(err))
+        raise IndexError
 
     return list_moves
 
@@ -114,8 +114,8 @@ def moves_up(x: int, y: int, fields=None) -> list:
                 elif fields is not None and not fields[x + j * 8].is_empty:
                     break
     except IndexError as err:
-            print('moves_up - Index Error: {}'.format(err))
-            raise IndexError
+        print('moves_up - Index Error: {}'.format(err))
+        raise IndexError
 
     return list_moves
 
@@ -134,8 +134,8 @@ def moves_down(x: int, y: int, fields=None) -> list:
                 elif fields is not None and not fields[x + j * 8].is_empty:
                     break
     except IndexError as err:
-            print('moves_down - Index Error: {}'.format(err))
-            raise IndexError
+        print('moves_down - Index Error: {}'.format(err))
+        raise IndexError
 
     return list_moves
 
@@ -213,7 +213,7 @@ class Rook(Figure):
 
         return list_moves
 
-    def validate_move(self, dest_field, fields=None):
+    def validate_move(self, dest_field, fields=None) -> bool:
         moves = self.list_available_moves(fields=fields)
 
         if not dest_field.is_empty:
@@ -230,11 +230,21 @@ class Bishop(Figure):
         super().__init__(field)
         self.value = 4
 
-    def list_available_moves(self):
-        pass
+    def list_available_moves(self, fields=None) -> list:
+        list_moves = []
 
-    def validate_move(self, dest_field):
-        pass
+        return list_moves
+
+    def validate_move(self, dest_field, fields=None) -> bool:
+        moves = self.list_available_moves(fields=fields)
+
+        if not dest_field.is_empty:
+            return False
+
+        for move in moves:
+            if move.field_name == dest_field.field_name:
+                return True
+        return False
 
 
 class Knight(Figure):
@@ -242,11 +252,21 @@ class Knight(Figure):
         super().__init__(field)
         self.value = 3
 
-    def list_available_moves(self):
-        pass
+    def list_available_moves(self, fields=None) -> list:
+        list_moves = []
 
-    def validate_move(self, dest_field):
-        pass
+        return list_moves
+
+    def validate_move(self, dest_field, fields=None) -> bool:
+        moves = self.list_available_moves(fields=fields)
+
+        if not dest_field.is_empty:
+            return False
+
+        for move in moves:
+            if move.field_name == dest_field.field_name:
+                return True
+        return False
 
 
 class Pawn(Figure):
