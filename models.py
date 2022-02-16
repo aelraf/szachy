@@ -119,7 +119,7 @@ class Rook(Figure):
 
         print("początkowa lokalizacja wieży: {}, {}".format(x, y))
         try:
-            for i in range(x-1, 1, -1):
+            for i in range(x-1, 0, -1):
                 if 1 <= i <= 8 and 1 <= y <= 8:
                     print("ruchy wieży w lewo: {} {}".format(i, y))
                     if fields is not None and fields[i + y*8].is_empty:
@@ -139,7 +139,7 @@ class Rook(Figure):
                     elif fields is not None and not fields[i + y*8].is_empty:
                         break
 
-            for j in range(y-1, 1, -1):
+            for j in range(y-1, 0, -1):
                 if 1 <= x <= 8 and 1 <= j <= 8:
                     print("ruchy wieży w dół: {} {}".format(x, j))
                     if fields is not None and fields[x + j*8].is_empty:
@@ -162,6 +162,9 @@ class Rook(Figure):
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
             raise IndexError
+
+        for move in list_moves:
+            print(move.field_name)
 
         return list_moves
 

@@ -298,10 +298,55 @@ class TestModelRook:
         list_moves = rook.list_available_moves()
         assert list_moves != []
 
-        assert len(list_moves) == 14
-        assert 'C1' in list_moves
-        assert 'A8' in list_moves
-        assert 'H1' in list_moves
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert len(list_fields) == 14
+        assert 'C1' in list_fields
+        assert 'A8' in list_fields
+        assert 'H1' in list_fields
+
+    def test_rook_available_moves_in_top_corner(self):
+        rook = Rook(Field(8, 8, is_empty=False, figure_code=5))
+
+        list_moves = rook.list_available_moves()
+        assert list_moves != []
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert len(list_fields) == 14
+        assert 'D8' in list_fields
+        assert 'A8' in list_fields
+        assert 'H1' in list_fields
+
+    def test_rook_list_available_moves_on_middle(self):
+        rook = Rook(Field(4, 4, is_empty=False, figure_code=5))
+
+        list_moves = rook.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'A4' in list_fields
+        assert 'H4' in list_fields
+        assert 'D1' in list_fields
+        assert 'D8' in list_fields
+        assert len(list_fields) == 14
+
+    def test_rook_list_moves_with_bad_parameter(self):
+        rook = self.get_rook()
+        fieldset = [Field(4, 1, is_empty=False), Field(6, 1, is_empty=False)]
+
+        with pytest.raises(IndexError):
+            list_moves = rook.list_available_moves(fields=fieldset)
+
+            list_fields = []
+            for field in list_moves:
+                list_fields.append(field.field_name)
 
     def test_rook_validate_good_field(self):
         rook = self.get_rook()
