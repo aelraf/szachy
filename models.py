@@ -4,7 +4,7 @@ import abc
 
 
 class Field:
-    def __init__(self, x, y, is_empty=True, figure_code=0, is_black=False):
+    def __init__(self, x: int, y: int, is_empty=True, figure_code=0, is_black=False):
         """
         :param x: numer wiersza
         :param y: numer kolumny
@@ -28,10 +28,10 @@ class Field:
         else:
             return False
 
-    def change_to_numbers(self, letter) -> int:
+    def change_to_numbers(self, letter: str) -> int:
         return self.letter_dictionary[letter]
 
-    def change_to_letters(self, number) -> str:
+    def change_to_letters(self, number: int) -> str:
         number += 64
         letter = chr(number)
         return letter
@@ -48,7 +48,7 @@ class Figure(abc.ABC):
     """
 
     @abc.abstractmethod
-    def __init__(self, field):
+    def __init__(self, field: Field):
         self.field = field
 
     @abc.abstractmethod
@@ -56,7 +56,7 @@ class Figure(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def validate_move(self, dest_field):
+    def validate_move(self, dest_field: Field):
         pass
 
 
@@ -123,7 +123,7 @@ def moves_oblique(x: int, y: int, p1: int, p2: int, fields=None) -> list:
 
 
 class King(Figure):
-    def __init__(self, field):
+    def __init__(self, field: Field):
         super().__init__(field)
         self.value = 100
 
@@ -145,7 +145,7 @@ class King(Figure):
 
         return list_moves
 
-    def validate_move(self, dest_field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields=None) -> bool:
         if not dest_field.is_empty:
             return False
 
@@ -158,7 +158,7 @@ class King(Figure):
 
 
 class Queen(Figure):
-    def __init__(self, field):
+    def __init__(self, field: Field):
         super().__init__(field)
         self.value = 10
 
@@ -166,7 +166,7 @@ class Queen(Figure):
         list_moves = []
         return list_moves
 
-    def validate_move(self, dest_field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields=None) -> bool:
         if not dest_field.is_empty:
             return False
 
@@ -179,7 +179,7 @@ class Queen(Figure):
 
 
 class Rook(Figure):
-    def __init__(self, field):
+    def __init__(self, field: Field):
         super().__init__(field)
         self.value = 5
 
@@ -204,7 +204,7 @@ class Rook(Figure):
 
         return list_moves
 
-    def validate_move(self, dest_field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields=None) -> bool:
         if not dest_field.is_empty:
             return False
 
@@ -217,7 +217,7 @@ class Rook(Figure):
 
 
 class Bishop(Figure):
-    def __init__(self, field):
+    def __init__(self, field: Field):
         super().__init__(field)
         self.value = 4
 
@@ -245,7 +245,7 @@ class Bishop(Figure):
 
         return list_moves
 
-    def validate_move(self, dest_field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields=None) -> bool:
         if not dest_field.is_empty:
             return False
 
@@ -258,7 +258,7 @@ class Bishop(Figure):
 
 
 class Knight(Figure):
-    def __init__(self, field):
+    def __init__(self, field: Field):
         super().__init__(field)
         self.value = 3
 
@@ -267,7 +267,7 @@ class Knight(Figure):
 
         return list_moves
 
-    def validate_move(self, dest_field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields=None) -> bool:
         if not dest_field.is_empty:
             return False
 
@@ -280,7 +280,7 @@ class Knight(Figure):
 
 
 class Pawn(Figure):
-    def __init__(self, field):
+    def __init__(self, field: Field):
         super().__init__(field)
         self.value = 1
 
@@ -307,7 +307,7 @@ class Pawn(Figure):
 
         return list_moves
 
-    def validate_move(self, dest_field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields=None) -> bool:
         if not dest_field.is_empty:
             return False
 
