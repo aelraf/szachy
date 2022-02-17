@@ -3,7 +3,7 @@
 
 import pytest
 
-from .models import Field, King, Pawn, Rook, Bishop
+from .models import Field, King, Pawn, Rook, Bishop, Queen
 
 
 def get_starting_chessboard(fields: list[Field]) -> list:
@@ -366,6 +366,23 @@ class TestModelRook:
             for field in list_moves:
                 list_fields.append(field.field_name)
 
+    def test_rook_list_moves_with_good_parameter(self):
+        rook = Rook(Field(4, 4, is_empty=False, figure_code=5))
+        fieldset = get_starting_chessboard(get_fieldset())
+
+        list_moves = rook.list_available_moves(fields=fieldset)
+        assert list_moves != []
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'D4' not in list_fields
+        assert 'F4' in list_fields
+        assert 'C4' in list_fields
+        assert 'D2' in list_fields
+        assert len(list_fields) == 10
+
     def test_rook_validate_good_field(self):
         rook = self.get_rook()
         field = Field(1, 8, is_empty=True)
@@ -398,7 +415,7 @@ class TestModelRook:
 
 
 class TestModelBishop:
-    def get_bishop(self, x, y) -> Bishop:
+    def get_bishop(self, x: int, y: int) -> Bishop:
         field = Field(x=x, y=y, is_empty=False, figure_code=4)
         bishop = Bishop(field)
 
@@ -520,4 +537,103 @@ class TestModelBishop:
         field = Field(34, 34, is_empty=False)
 
         assert not bishop.validate_move(dest_field=field)
+
+
+class TestModelQueen:
+    def get_queen(self, x: int, y: int) -> Queen:
+        field = Field(x=x, y=y, is_empty=False, figure_code=10)
+        queen = Queen(field)
+
+        return queen
+
+    def test_queen_init(self):
+        queen = self.get_queen(4, 1)
+
+        assert queen.value == 10
+        assert not queen.field.is_empty
+        assert queen.field.field_name == "A4"
+
+    def test_queen_available_moves(self):
+        queen = self.get_queen(4, 1)
+
+        list_moves = queen.list_available_moves()
+        assert list_moves != []
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'A4' not in list_fields
+        assert 'A1' in list_fields
+        assert 'H4' in list_fields
+        assert 'A8' in list_fields
+        assert 'E8' in list_fields
+
+        assert len(list_fields) == 21
+
+    def test_queen_available_moves_in_corner(self):
+        queen = self.get_queen(8, 8)
+        list_moves = queen.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'H8' not in list_fields
+        assert 'A8' in list_fields
+        assert 'H1' in list_fields
+        assert 'A1' in list_fields
+        assert len(list_fields) == 21
+
+        queen = self.get_queen(1, 8)
+        list_moves = queen.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'A8' not in list_fields
+        assert 'A1' in list_fields
+        assert 'H8' in list_fields
+        assert 'H1' in list_fields
+        assert len(list_fields) == 21
+
+    def test_queen_available_moves_on_middle(self):
+        queen = self.get_queen(4, 4)
+        list_moves = queen.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'G1' in list_fields
+        assert 'D4' not in list_fields
+        assert 'A7' in list_fields
+        assert 'A1' in list_fields
+        assert 'G7' in list_fields
+        assert len(list_fields) == 13
+
+    def test_queen_list_moves_with_bad_parameter(self):
+        queen = self.get_queen(3, 1)
+        fieldset = [Field(4, 1, is_empty=False), Field(6, 1, is_empty=False)]
+
+        with pytest.raises(IndexError):
+            queen.list_available_moves(fields=fieldset)
+
+    def test_queen_list_moves_with_good_parameter(self):
+        queen = self.get_queen(1, 3)
+        fieldset = get_starting_chessboard(get_fieldset())
+
+        list_moves = queen.list_available_moves(fields=fieldset)
+        assert list_moves != []
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'G5' not in list_fields
+        assert 'E3' in list_fields
+        assert 'F4' in list_fields
+        assert 'D2' in list_fields
+        assert len(list_fields) == 3
 
