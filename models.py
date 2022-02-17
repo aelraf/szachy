@@ -272,6 +272,30 @@ class Knight(Figure):
     def list_available_moves(self, fields: List[Field] = None) -> list:
         list_moves = []
 
+        x = self.field.x
+        y = self.field.y
+
+        try:
+            for ix in range(-1, 2, 2):
+                for iy in range(-2, 3, 4):
+                    if 0 < x + ix < 9 and 0 < y + iy < 9:
+                        if fields is not None and fields[x-1 + ix + (y-1+iy) * 8].is_empty:
+                            list_moves.append(Field(x + ix, y + iy))
+                        elif fields is None:
+                            list_moves.append(Field(x + ix, y + iy))
+
+            for ix in range(-2, 3, 4):
+                for iy in range(-1, 2, 2):
+                    if 0 < x + ix < 9 and 0 < y + iy < 9:
+                        if fields is not None and fields[x-1 + ix + (y-1+iy) * 8].is_empty:
+                            list_moves.append(Field(x + ix, y + iy))
+                        elif fields is None:
+                            list_moves.append(Field(x + ix, y + iy))
+
+        except IndexError as err:
+            print('list_available_moves - Index Error: {}'.format(err))
+            raise IndexError
+
         return list_moves
 
     def validate_move(self, dest_field: Field, fields: List[Field] = None) -> bool:

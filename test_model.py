@@ -683,7 +683,7 @@ class TestModelKnight:
         assert knight.field.field_name == "A2"
 
     def test_knight_available_moves(self):
-        knight = self.get_knight(4, 1)
+        knight = self.get_knight(2, 1)
 
         list_moves = knight.list_available_moves()
         assert list_moves != []
@@ -692,13 +692,12 @@ class TestModelKnight:
         for field in list_moves:
             list_fields.append(field.field_name)
 
-        assert 'A3' not in list_fields
-        assert 'B1' in list_fields
-        assert 'C2' in list_fields
-        assert 'C4' in list_fields
-        assert 'B5' in list_fields
+        assert 'A2' not in list_fields
+        assert 'C1' in list_fields
+        assert 'C3' in list_fields
+        assert 'B4' in list_fields
 
-        assert len(list_fields) == 4
+        assert len(list_fields) == 3
 
     def test_knight_available_moves_in_corner(self):
         knight = self.get_knight(8, 8)
@@ -776,13 +775,13 @@ class TestModelKnight:
         assert not knight.validate_move(dest_field=field)
 
     def test_knight_validate_move_not_empty_field(self):
-        knight = self.get_knight(4, 1)
+        knight = self.get_knight(2, 1)
         field = Field(4, 2, is_empty=False)
 
         assert not knight.validate_move(dest_field=field)
 
     def test_knight_validate_move_bad_not_empty_field(self):
-        knight = self.get_knight(4, 1)
+        knight = self.get_knight(2, 1)
         field = Field(34, 34, is_empty=False)
 
         assert not knight.validate_move(dest_field=field)
