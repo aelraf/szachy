@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-# https://pypi.org/project/pytest/
 
 import pytest
-from werkzeug.exceptions import HTTPException
 
-from .models import Field, King, Pawn, Rook, Bishop, Queen, Knight
 from .main import abort_if_field_doesnt_exist, abort_if_figure_doesnt_exist, app, change_to_numbers
 
 
@@ -33,7 +30,6 @@ class TestAbortMethods:
 
     def test_abort_if_number_to_small(self):
         field = 'A-9'
-        # with pytest.raises(HTTPException):
         abort, message = abort_if_field_doesnt_exist(field=field)
         assert abort == 409
         assert message == 'Field does not exist.'
@@ -49,7 +45,6 @@ class TestAbortMethods:
     def test_abort_figure_doesnt_exist(self):
         figure = 'pope'
 
-        # with pytest.raises(HTTPException):
         abort, message = abort_if_figure_doesnt_exist(figure=figure)
         assert abort == 404
         assert message == "Bad figures."
@@ -72,7 +67,6 @@ class TestChessMove:
 
         with app.test_client() as client:
             url = '/api/v1/' + figure + '/' + field
-            print('URL: {}'.format(url))
             response = client.get(url)
             assert response.status_code == 200
 
@@ -88,9 +82,7 @@ class TestChessMove:
 
         with app.test_client() as client:
             url = '/api/v1/' + figure + '/' + field
-            print('URL: {}'.format(url))
             response = client.get(url)
-            print(response.json)
             assert response.status_code == 404
 
             assert response.get_json()['availableMoves'] == []
@@ -101,9 +93,7 @@ class TestChessMove:
 
         with app.test_client() as client:
             url = '/api/v1/' + figure + '/' + field
-            print('URL: {}'.format(url))
             response = client.get(url)
-            print(response.json)
             assert response.status_code == 409
 
             assert response.get_json()['availableMoves'] == []
@@ -114,9 +104,7 @@ class TestChessMove:
 
         with app.test_client() as client:
             url = '/api/v1/' + figure + '/' + field
-            print('URL: {}'.format(url))
             response = client.get(url)
-            print(response.json)
             assert response.status_code == 409
 
             assert response.get_json()['availableMoves'] == []
@@ -130,7 +118,6 @@ class TestChessCheck:
 
         with app.test_client() as client:
             url = '/api/v1/' + figure + '/' + field + '/' + dest
-            print('URL: {}'.format(url))
             response = client.get(url)
             assert response.status_code == 200
 
@@ -143,9 +130,7 @@ class TestChessCheck:
 
         with app.test_client() as client:
             url = '/api/v1/' + figure + '/' + field + '/' + dest
-            print('URL: {}'.format(url))
             response = client.get(url)
-            print(response.json)
             assert response.status_code == 404
 
             assert response.get_json()['move'] == 'invalid'
@@ -157,9 +142,7 @@ class TestChessCheck:
 
         with app.test_client() as client:
             url = '/api/v1/' + figure + '/' + field + '/' + dest
-            print('URL: {}'.format(url))
             response = client.get(url)
-            print(response.json)
             assert response.status_code == 409
 
             assert response.get_json()['move'] == 'invalid'
@@ -171,9 +154,7 @@ class TestChessCheck:
 
         with app.test_client() as client:
             url = '/api/v1/' + figure + '/' + field + '/' + dest
-            print('URL: {}'.format(url))
             response = client.get(url)
-            print(response.json)
             assert response.status_code == 200
 
             assert response.get_json()['move'] == 'invalid'
@@ -185,9 +166,7 @@ class TestChessCheck:
 
         with app.test_client() as client:
             url = '/api/v1/' + figure + '/' + field + '/' + dest
-            print('URL: {}'.format(url))
             response = client.get(url)
-            print(response.json)
             assert response.status_code == 404
 
             assert response.get_json()['move'] == 'invalid'

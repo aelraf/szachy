@@ -10,7 +10,6 @@ api = Api(app)
 def abort_if_field_doesnt_exist(field: str):
     letters = {'A': 1, 'B': 2, 'C': 3, 'D': 4, "E": 5, "F": 6, 'G': 7, 'H': 8}
     if field[0] not in letters or int(field[1:]) > 8 or int(field[1:]) < 1:
-        # abort(409, error="Field does not exist.")
         return 409, "Field does not exist."
     return 200, None
 
@@ -18,7 +17,6 @@ def abort_if_field_doesnt_exist(field: str):
 def abort_if_figure_doesnt_exist(figure: str):
     figures = {'king', 'queen', 'bishop', 'knight', 'rook', 'pawn'}
     if figure not in figures:
-        # abort(404, error="Bad figures.")
         return 404, "Bad figures."
     return 200, None
 
@@ -40,7 +38,6 @@ class ChessMove(Resource):
 
         if error1_code == 200 and error2_code == 200:
             field = Field(int(current_field[1]), change_to_numbers(current_field[0]), is_empty=False)
-            print(field.field_name)
             diction = {
                 'king': King(field),
                 'queen': Queen(field),
@@ -53,14 +50,7 @@ class ChessMove(Resource):
             checking_figure = diction.get(figure, '')
             field.figure_code = checking_figure.value
 
-            print('GET - figura: {}, pole: {}, sprawdzane: {}'.format(
-                checking_figure.value,
-                checking_figure.field.field_name,
-                field.field_name)
-            )
-
             available_moves = checking_figure.list_available_moves()
-            print(available_moves)
 
         error_code = error1_code if error1_code != 200 else error2_code if error2_code != 200 else None
         error_message = error1_message if error1_code else error2_message
@@ -110,7 +100,6 @@ class ChessCheck(Resource):
         if error1_code == 200 and error2_code == 200 and error3_code == 200:
             field = Field(int(current_field[1]), change_to_numbers(current_field[0]), is_empty=False)
             dest_f = Field(int(dest_field[1]), change_to_numbers(dest_field[0]), is_empty=True)
-            print(field.field_name + " " + dest_f.field_name)
             diction = {
                 'king': King(field),
                 'queen': Queen(field),
@@ -123,11 +112,6 @@ class ChessCheck(Resource):
             checking_figure = diction.get(figure, '')
             field.figure_code = checking_figure.value
 
-            print('GET check - figura: {}, stoi na: {}, sprawdzane: {}'.format(
-                checking_figure.value,
-                checking_figure.field.field_name,
-                dest_f.field_name)
-            )
             try:
                 valid = checking_figure.validate_move(dest_field=dest_f)
                 is_valid = 'valid' if valid else 'invalid'
