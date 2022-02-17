@@ -109,16 +109,12 @@ class TestModelKing:
         list_moves = king.list_available_moves()
         assert list_moves != []
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'B5' in list_fields
-        assert 'B4' in list_fields
-        assert 'B6' in list_fields
-        assert 'A4' in list_fields
-        assert 'A6' in list_fields
-        assert len(list_fields) == 5
+        assert 'B5' in list_moves
+        assert 'B4' in list_moves
+        assert 'B6' in list_moves
+        assert 'A4' in list_moves
+        assert 'A6' in list_moves
+        assert len(list_moves) == 5
 
     def test_king_list_available_moves_in_corner(self):
         field = Field(8, 8, is_empty=False, figure_code=100, is_black=False)
@@ -126,14 +122,10 @@ class TestModelKing:
 
         list_moves = king.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'G7' in list_fields
-        assert 'G8' in list_fields
-        assert 'H7' in list_fields
-        assert len(list_fields) == 3
+        assert 'G7' in list_moves
+        assert 'G8' in list_moves
+        assert 'H7' in list_moves
+        assert len(list_moves) == 3
 
     def test_king_list_available_moves_on_middle(self):
         field = Field(4, 4, is_empty=False, figure_code=100, is_black=False)
@@ -141,14 +133,10 @@ class TestModelKing:
 
         list_moves = king.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'C3' in list_fields
-        assert 'E4' in list_fields
-        assert 'D5' in list_fields
-        assert len(list_fields) == 8
+        assert 'C3' in list_moves
+        assert 'E4' in list_moves
+        assert 'D5' in list_moves
+        assert len(list_moves) == 8
 
     def test_king_list_moves_with_bad_parameter(self):
         king = self.get_king()
@@ -156,10 +144,6 @@ class TestModelKing:
 
         with pytest.raises(IndexError):
             list_moves = king.list_available_moves(fields=fieldset)
-
-            list_fields = []
-            for field in list_moves:
-                list_fields.append(field.field_name)
 
     def test_king_validate_move_good_field(self):
         king = self.get_king()
@@ -214,7 +198,7 @@ class TestModelPawn:
         assert list_moves != []
 
         assert len(list_moves) == 1
-        assert list_moves[0].field_name == 'C1'
+        assert 'C1' in list_moves
 
     def test_pawn_black_list_available_moves(self):
         pawn = self.get_pawn(is_black=True)
@@ -223,7 +207,7 @@ class TestModelPawn:
         assert list_moves != []
 
         assert len(list_moves) == 1
-        assert list_moves[0].field_name == 'A1'
+        assert 'A1' in list_moves
 
     def test_pawn_white_available_moves_in_corner(self):
         field = Field(8, 8, is_empty=False, figure_code=1, is_black=False)
@@ -240,7 +224,7 @@ class TestModelPawn:
         assert list_moves != []
 
         assert len(list_moves) == 1
-        assert list_moves[0].field_name == 'E4'
+        assert 'E4' in list_moves
 
     def test_pawn_black_available_moves_on_middle(self):
         field = Field(4, 4, is_empty=False, figure_code=1, is_black=True)
@@ -250,7 +234,7 @@ class TestModelPawn:
         assert list_moves != []
 
         assert len(list_moves) == 1
-        assert list_moves[0].field_name == 'C4'
+        assert 'C4' in list_moves
 
     def test_pawn_moves_with_bad_parameter(self):
         pawn = self.get_pawn()
@@ -310,16 +294,12 @@ class TestModelRook:
         list_moves = rook.list_available_moves()
         assert list_moves != []
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
+        assert "A1" not in list_moves
+        assert 'C1' in list_moves
+        assert 'A8' in list_moves
+        assert 'H1' in list_moves
 
-        assert "A1" not in list_fields
-        assert 'C1' in list_fields
-        assert 'A8' in list_fields
-        assert 'H1' in list_fields
-
-        assert len(list_fields) == 14
+        assert len(list_moves) == 14
 
     def test_rook_available_moves_in_top_corner(self):
         rook = Rook(Field(8, 8, is_empty=False, figure_code=5))
@@ -327,44 +307,32 @@ class TestModelRook:
         list_moves = rook.list_available_moves()
         assert list_moves != []
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
+        assert 'H8' not in list_moves
+        assert 'D8' in list_moves
+        assert 'A8' in list_moves
+        assert 'H1' in list_moves
 
-        assert 'H8' not in list_fields
-        assert 'D8' in list_fields
-        assert 'A8' in list_fields
-        assert 'H1' in list_fields
-
-        assert len(list_fields) == 14
+        assert len(list_moves) == 14
 
     def test_rook_list_available_moves_on_middle(self):
         rook = Rook(Field(4, 4, is_empty=False, figure_code=5))
 
         list_moves = rook.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
+        assert 'D4' not in list_moves
+        assert 'A4' in list_moves
+        assert 'H4' in list_moves
+        assert 'D1' in list_moves
+        assert 'D8' in list_moves
 
-        assert 'D4' not in list_fields
-        assert 'A4' in list_fields
-        assert 'H4' in list_fields
-        assert 'D1' in list_fields
-        assert 'D8' in list_fields
-
-        assert len(list_fields) == 14
+        assert len(list_moves) == 14
 
     def test_rook_list_moves_with_bad_parameter(self):
         rook = self.get_rook()
         fieldset = [Field(4, 1, is_empty=False), Field(6, 1, is_empty=False)]
 
         with pytest.raises(IndexError):
-            list_moves = rook.list_available_moves(fields=fieldset)
-
-            list_fields = []
-            for field in list_moves:
-                list_fields.append(field.field_name)
+            rook.list_available_moves(fields=fieldset)
 
     def test_rook_list_moves_with_good_parameter(self):
         rook = Rook(Field(4, 4, is_empty=False, figure_code=5))
@@ -373,15 +341,11 @@ class TestModelRook:
         list_moves = rook.list_available_moves(fields=fieldset)
         assert list_moves != []
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'D4' not in list_fields
-        assert 'F4' in list_fields
-        assert 'C4' in list_fields
-        assert 'D2' in list_fields
-        assert len(list_fields) == 10
+        assert 'D4' not in list_moves
+        assert 'F4' in list_moves
+        assert 'C4' in list_moves
+        assert 'D2' in list_moves
+        assert len(list_moves) == 10
 
     def test_rook_validate_good_field(self):
         rook = self.get_rook()
@@ -434,55 +398,39 @@ class TestModelBishop:
         list_moves = bishop.list_available_moves()
         assert list_moves != []
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
+        assert 'C1' in list_moves
+        assert 'B4' in list_moves
+        assert 'F8' in list_moves
 
-        assert 'C1' in list_fields
-        assert 'B4' in list_fields
-        assert 'F8' in list_fields
-
-        assert len(list_fields) == 7
+        assert len(list_moves) == 7
 
     def test_bishop_available_moves_in_corner(self):
         bishop = self.get_bishop(8, 8)
         list_moves = bishop.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'G7' in list_fields
-        assert 'D4' in list_fields
-        assert 'A1' in list_fields
-        assert len(list_fields) == 7
+        assert 'G7' in list_moves
+        assert 'D4' in list_moves
+        assert 'A1' in list_moves
+        assert len(list_moves) == 7
 
         bishop = self.get_bishop(1, 8)
         list_moves = bishop.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'G2' in list_fields
-        assert 'A8' in list_fields
-        assert 'C6' in list_fields
-        assert len(list_fields) == 7
+        assert 'G2' in list_moves
+        assert 'A8' in list_moves
+        assert 'C6' in list_moves
+        assert len(list_moves) == 7
 
     def test_bishop_available_moves_on_middle(self):
         bishop = self.get_bishop(4, 4)
         list_moves = bishop.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'G1' in list_fields
-        assert 'D4' not in list_fields
-        assert 'A7' in list_fields
-        assert 'A1' in list_fields
-        assert 'G7' in list_fields
-        assert len(list_fields) == 13
+        assert 'G1' in list_moves
+        assert 'D4' not in list_moves
+        assert 'A7' in list_moves
+        assert 'A1' in list_moves
+        assert 'G7' in list_moves
+        assert len(list_moves) == 13
 
     def test_bishop_list_moves_with_bad_parameter(self):
         bishop = self.get_bishop(3, 1)
@@ -498,15 +446,11 @@ class TestModelBishop:
         list_moves = bishop.list_available_moves(fields=fieldset)
         assert list_moves != []
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'G5' not in list_fields
-        assert 'E3' in list_fields
-        assert 'F4' in list_fields
-        assert 'D2' in list_fields
-        assert len(list_fields) == 3
+        assert 'G5' not in list_moves
+        assert 'E3' in list_moves
+        assert 'F4' in list_moves
+        assert 'D2' in list_moves
+        assert len(list_moves) == 3
 
     def test_bishop_validate_move_good_field(self):
         bishop = self.get_bishop(3, 1)
@@ -559,62 +503,46 @@ class TestModelQueen:
         list_moves = queen.list_available_moves()
         assert list_moves != []
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
+        assert 'A4' not in list_moves
+        assert 'A1' in list_moves
+        assert 'H4' in list_moves
+        assert 'A8' in list_moves
+        assert 'E8' in list_moves
 
-        assert 'A4' not in list_fields
-        assert 'A1' in list_fields
-        assert 'H4' in list_fields
-        assert 'A8' in list_fields
-        assert 'E8' in list_fields
-
-        assert len(list_fields) == 21
+        assert len(list_moves) == 21
 
     def test_queen_available_moves_in_corner(self):
         queen = self.get_queen(8, 8)
         list_moves = queen.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'H8' not in list_fields
-        assert 'A8' in list_fields
-        assert 'H1' in list_fields
-        assert 'A1' in list_fields
-        assert len(list_fields) == 21
+        assert 'H8' not in list_moves
+        assert 'A8' in list_moves
+        assert 'H1' in list_moves
+        assert 'A1' in list_moves
+        assert len(list_moves) == 21
 
         queen = self.get_queen(1, 8)
         list_moves = queen.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'H1' not in list_fields
-        assert 'A1' in list_fields
-        assert 'H8' in list_fields
-        assert 'A8' in list_fields
-        assert len(list_fields) == 21
+        assert 'H1' not in list_moves
+        assert 'A1' in list_moves
+        assert 'H8' in list_moves
+        assert 'A8' in list_moves
+        assert len(list_moves) == 21
 
     def test_queen_available_moves_on_middle(self):
         queen = self.get_queen(4, 4)
         list_moves = queen.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'D4' not in list_fields
-        assert 'A4' in list_fields
-        assert 'D1' in list_fields
-        assert 'D8' in list_fields
-        assert 'A7' in list_fields
-        assert 'H8' in list_fields
-        assert 'H4' in list_fields
-        assert 'G1' in list_fields
-        assert len(list_fields) == 27
+        assert 'D4' not in list_moves
+        assert 'A4' in list_moves
+        assert 'D1' in list_moves
+        assert 'D8' in list_moves
+        assert 'A7' in list_moves
+        assert 'H8' in list_moves
+        assert 'H4' in list_moves
+        assert 'G1' in list_moves
+        assert len(list_moves) == 27
 
     def test_queen_list_moves_with_bad_parameter(self):
         queen = self.get_queen(3, 1)
@@ -630,15 +558,11 @@ class TestModelQueen:
         list_moves = queen.list_available_moves(fields=fieldset)
         assert list_moves != []
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'G5' not in list_fields
-        assert 'E1' in list_fields
-        assert 'F4' in list_fields
-        assert 'C8' in list_fields
-        assert len(list_fields) == 13
+        assert 'G5' not in list_moves
+        assert 'E1' in list_moves
+        assert 'F4' in list_moves
+        assert 'C8' in list_moves
+        assert len(list_moves) == 13
 
     def test_queen_validate_move_good_field(self):
         queen = self.get_queen(4, 1)
@@ -688,49 +612,37 @@ class TestModelKnight:
         list_moves = knight.list_available_moves()
         assert list_moves != []
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
+        assert 'A2' not in list_moves
+        assert 'C1' in list_moves
+        assert 'C3' in list_moves
+        assert 'B4' in list_moves
 
-        assert 'A2' not in list_fields
-        assert 'C1' in list_fields
-        assert 'C3' in list_fields
-        assert 'B4' in list_fields
-
-        assert len(list_fields) == 3
+        assert len(list_moves) == 3
 
     def test_knight_available_moves_in_corner(self):
         knight = self.get_knight(8, 8)
         list_moves = knight.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
+        assert 'H8' not in list_moves
+        assert 'G6' in list_moves
+        assert 'F7' in list_moves
 
-        assert 'H8' not in list_fields
-        assert 'G6' in list_fields
-        assert 'F7' in list_fields
-
-        assert len(list_fields) == 2
+        assert len(list_moves) == 2
 
     def test_knight_available_moves_on_middle(self):
         knight = self.get_knight(4, 4)
         list_moves = knight.list_available_moves()
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
-
-        assert 'D4' not in list_fields
-        assert 'E2' in list_fields
-        assert 'F3' in list_fields
-        assert 'E6' in list_fields
-        assert 'C6' in list_fields
-        assert 'B3' in list_fields
-        assert 'B5' in list_fields
-        assert 'C2' in list_fields
-        assert 'F5' in list_fields
-        assert len(list_fields) == 8
+        assert 'D4' not in list_moves
+        assert 'E2' in list_moves
+        assert 'F3' in list_moves
+        assert 'E6' in list_moves
+        assert 'C6' in list_moves
+        assert 'B3' in list_moves
+        assert 'B5' in list_moves
+        assert 'C2' in list_moves
+        assert 'F5' in list_moves
+        assert len(list_moves) == 8
 
     def test_knight_list_moves_with_bad_parameter(self):
         knight = self.get_knight(2, 1)
@@ -746,15 +658,11 @@ class TestModelKnight:
         list_moves = knight.list_available_moves(fields=fieldset)
         assert list_moves != []
 
-        list_fields = []
-        for field in list_moves:
-            list_fields.append(field.field_name)
+        assert 'A2' not in list_moves
+        assert 'C1' in list_moves
+        assert 'C3' in list_moves
 
-        assert 'A2' not in list_fields
-        assert 'C1' in list_fields
-        assert 'C3' in list_fields
-
-        assert len(list_fields) == 2
+        assert len(list_moves) == 2
 
     def test_knight_validate_move_good_field(self):
         knight = self.get_knight(2, 1)
