@@ -7,37 +7,35 @@ from .models import Field, King, Pawn, Rook, Bishop
 
 
 def get_starting_chessboard(fields: list[Field]) -> list:
-    print('dlugosc listy: {}'.format(len(fields)))
-    for i in range(1, 17):
+    for i in range(0, 16):
         fields[i].is_empty = False
-        if i == 1 or i == 8:
+        if i == 0 or i == 7:
             fields[i].figure_code = 5
-        if i == 2 or i == 7:
+        if i == 1 or i == 6:
             fields[i].figure_code = 3
-        if i == 3 or i == 6:
+        if i == 2 or i == 5:
             fields[i].figure_code = 3
-        if i == 4:
+        if i == 3:
             fields[i].figure_code = 10
-        if i == 5:
+        if i == 4:
             fields[i].figure_code = 100
-        if i in range(9, 17):
+        if i in range(8, 16):
             fields[i].figure_code = 1
 
-    for i in range(48, 65):
-        print(i)
+    for i in range(48, 64):
         fields[i].is_empty = False
         fields[i].is_black = True
-        if i == 57 or i == 64:
+        if i == 56 or i == 63:
             fields[i].figure_code = 5
-        if i == 58 or i == 63:
+        if i == 57 or i == 62:
             fields[i].figure_code = 3
-        if i == 59 or i == 62:
+        if i == 58 or i == 61:
             fields[i].figure_code = 3
-        if i == 60:
+        if i == 59:
             fields[i].figure_code = 10
-        if i == 61:
+        if i == 60:
             fields[i].figure_code = 100
-        if i in range(48, 57):
+        if i in range(48, 56):
             fields[i].figure_code = 1
 
     return fields
@@ -470,12 +468,22 @@ class TestModelBishop:
         with pytest.raises(IndexError):
             bishop.list_available_moves(fields=fieldset)
 
-    def test_bisop_list_moves_with_good_parameter(self):
-        bishop = self.get_bishop(3, 1)
+    def test_bishop_list_moves_with_good_parameter(self):
+        bishop = self.get_bishop(1, 3)
         fieldset = get_starting_chessboard(get_fieldset())
 
         list_moves = bishop.list_available_moves(fields=fieldset)
         assert list_moves != []
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'G5' not in list_fields
+        assert 'E3' in list_fields
+        assert 'F4' in list_fields
+        assert 'D2' in list_fields
+        assert len(list_fields) == 3
 
     def test_bishop_validate_move_good_field(self):
         bishop = self.get_bishop(3, 1)
