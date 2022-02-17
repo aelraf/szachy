@@ -763,4 +763,27 @@ class TestModelKnight:
 
         assert knight.validate_move(dest_field=field)
 
+    def test_knight_validate_not_straight_field(self):
+        knight = self.get_knight(2, 1)
+        field = Field(3, 2, is_empty=True)
+
+        assert not knight.validate_move(dest_field=field)
+
+    def test_knight_validate_move_bad_field(self):
+        knight = self.get_knight(2, 1)
+        field = Field(10, 12, is_empty=True)
+
+        assert not knight.validate_move(dest_field=field)
+
+    def test_knight_validate_move_not_empty_field(self):
+        knight = self.get_knight(4, 1)
+        field = Field(4, 2, is_empty=False)
+
+        assert not knight.validate_move(dest_field=field)
+
+    def test_knight_validate_move_bad_not_empty_field(self):
+        knight = self.get_knight(4, 1)
+        field = Field(34, 34, is_empty=False)
+
+        assert not knight.validate_move(dest_field=field)
 
