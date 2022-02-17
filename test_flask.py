@@ -76,6 +76,8 @@ class TestChessMove:
             response = client.get(url)
             assert response.status_code == 200
 
+            assert response.get_json()['availableMoves'] != []
+
             assert 'H1' in response.get_json()['availableMoves']
             assert 'H8' in response.get_json()['availableMoves']
             assert 'A8' in response.get_json()['availableMoves']
@@ -91,6 +93,8 @@ class TestChessMove:
             print(response.json)
             assert response.status_code == 404
 
+            assert response.get_json()['availableMoves'] == []
+
     def test_get_move_bad_field(self):
         figure = 'king'
         field = 'Z9'
@@ -102,24 +106,90 @@ class TestChessMove:
             print(response.json)
             assert response.status_code == 409
 
+            assert response.get_json()['availableMoves'] == []
+
     def test_get_move_bad_both(self):
-        pass
+        figure = 'pope'
+        field = 'Z9'
+
+        with app.test_client() as client:
+            url = '/api/v1/' + figure + '/' + field
+            print('URL: {}'.format(url))
+            response = client.get(url)
+            print(response.json)
+            assert response.status_code == 409
+
+            assert response.get_json()['availableMoves'] == []
 
 
 class TestChessCheck:
     def test_get_ok(self):
-        pass
+        figure = 'queen'
+        field = 'A1'
+        dest = "A3"
+
+        with app.test_client() as client:
+            url = '/api/v1/' + figure + '/' + field + '/' + dest
+            print('URL: {}'.format(url))
+            response = client.get(url)
+            assert response.status_code == 200
+
+            assert response.get_json()['move'] != 'valid'
 
     def test_get_check_bad_figure(self):
-        pass
+        figure = 'pope'
+        field = 'A1'
+        dest = "A3"
+
+        with app.test_client() as client:
+            url = '/api/v1/' + figure + '/' + field + '/' + dest
+            print('URL: {}'.format(url))
+            response = client.get(url)
+            print(response.json)
+            assert response.status_code == 404
+
+            assert response.get_json()['move'] == 'invalid'
 
     def test_get_check_bad_field(self):
-        pass
+        figure = 'queen'
+        field = 'A1'
+        dest = "U3"
+
+        with app.test_client() as client:
+            url = '/api/v1/' + figure + '/' + field + '/' + dest
+            print('URL: {}'.format(url))
+            response = client.get(url)
+            print(response.json)
+            assert response.status_code == 404
+
+            assert response.get_json()['move'] == 'invalid'
 
     def test_get_check_bad_dest_field(self):
-        pass
+        figure = 'queen'
+        field = 'A1'
+        dest = "G8"
+
+        with app.test_client() as client:
+            url = '/api/v1/' + figure + '/' + field + '/' + dest
+            print('URL: {}'.format(url))
+            response = client.get(url)
+            print(response.json)
+            assert response.status_code == 404
+
+            assert response.get_json()['move'] == 'invalid'
 
     def test_get_check_bad_both(self):
-        pass
+        figure = 'pope'
+        field = 'A1'
+        dest = "A3"
+
+        with app.test_client() as client:
+            url = '/api/v1/' + figure + '/' + field + '/' + dest
+            print('URL: {}'.format(url))
+            response = client.get(url)
+            print(response.json)
+            assert response.status_code == 404
+
+            assert response.get_json()['move'] == 'invalid'
 
 
