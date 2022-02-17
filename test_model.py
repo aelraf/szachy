@@ -592,10 +592,10 @@ class TestModelQueen:
         for field in list_moves:
             list_fields.append(field.field_name)
 
-        assert 'A8' not in list_fields
+        assert 'H1' not in list_fields
         assert 'A1' in list_fields
         assert 'H8' in list_fields
-        assert 'H1' in list_fields
+        assert 'A8' in list_fields
         assert len(list_fields) == 21
 
     def test_queen_available_moves_on_middle(self):
@@ -606,12 +606,15 @@ class TestModelQueen:
         for field in list_moves:
             list_fields.append(field.field_name)
 
-        assert 'G1' in list_fields
         assert 'D4' not in list_fields
+        assert 'A4' in list_fields
+        assert 'D1' in list_fields
+        assert 'D8' in list_fields
         assert 'A7' in list_fields
-        assert 'A1' in list_fields
-        assert 'G7' in list_fields
-        assert len(list_fields) == 13
+        assert 'H8' in list_fields
+        assert 'H4' in list_fields
+        assert 'G1' in list_fields
+        assert len(list_fields) == 27
 
     def test_queen_list_moves_with_bad_parameter(self):
         queen = self.get_queen(3, 1)
@@ -632,8 +635,38 @@ class TestModelQueen:
             list_fields.append(field.field_name)
 
         assert 'G5' not in list_fields
-        assert 'E3' in list_fields
+        assert 'E1' in list_fields
         assert 'F4' in list_fields
-        assert 'D2' in list_fields
-        assert len(list_fields) == 3
+        assert 'C8' in list_fields
+        assert len(list_fields) == 13
+
+    def test_queen_validate_move_good_field(self):
+        queen = self.get_queen(4, 1)
+        field = Field(4, 2, is_empty=True)
+
+        assert queen.validate_move(dest_field=field)
+
+    def test_queen_validate_not_straight_field(self):
+        queen = self.get_queen(4, 1)
+        field = Field(5, 3, is_empty=True)
+
+        assert not queen.validate_move(dest_field=field)
+
+    def test_queen_validate_move_bad_field(self):
+        queen = self.get_queen(4, 1)
+        field = Field(10, 12, is_empty=True)
+
+        assert not queen.validate_move(dest_field=field)
+
+    def test_queen_validate_move_not_empty_field(self):
+        queen = self.get_queen(4, 1)
+        field = Field(4, 2, is_empty=False)
+
+        assert not queen.validate_move(dest_field=field)
+
+    def test_queen_validate_move_bad_not_empty_field(self):
+        queen = self.get_queen(4, 1)
+        field = Field(34, 34, is_empty=False)
+
+        assert not queen.validate_move(dest_field=field)
 
