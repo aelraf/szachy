@@ -143,7 +143,7 @@ class TestModelKing:
         fieldset = [Field(4, 1, is_empty=False), Field(6, 1, is_empty=False)]
 
         with pytest.raises(IndexError):
-            list_moves = king.list_available_moves(fields=fieldset)
+            king.list_available_moves(fields=fieldset)
 
     def test_king_validate_move_good_field(self):
         king = self.get_king()

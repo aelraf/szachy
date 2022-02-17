@@ -1,5 +1,5 @@
-from flask import Flask, request, jsonify, make_response
-from flask_restful import Api, Resource, reqparse, abort
+from flask import Flask, jsonify, make_response
+from flask_restful import Api, Resource
 
 from .models import Field, King, Queen, Bishop, Knight, Rook, Pawn
 
