@@ -314,10 +314,12 @@ class TestModelRook:
         for field in list_moves:
             list_fields.append(field.field_name)
 
-        assert len(list_fields) == 14
+        assert "A1" not in list_fields
         assert 'C1' in list_fields
         assert 'A8' in list_fields
         assert 'H1' in list_fields
+
+        assert len(list_fields) == 14
 
     def test_rook_available_moves_in_top_corner(self):
         rook = Rook(Field(8, 8, is_empty=False, figure_code=5))
@@ -329,10 +331,12 @@ class TestModelRook:
         for field in list_moves:
             list_fields.append(field.field_name)
 
-        assert len(list_fields) == 14
+        assert 'H8' not in list_fields
         assert 'D8' in list_fields
         assert 'A8' in list_fields
         assert 'H1' in list_fields
+
+        assert len(list_fields) == 14
 
     def test_rook_list_available_moves_on_middle(self):
         rook = Rook(Field(4, 4, is_empty=False, figure_code=5))
@@ -343,10 +347,12 @@ class TestModelRook:
         for field in list_moves:
             list_fields.append(field.field_name)
 
+        assert 'D4' not in list_fields
         assert 'A4' in list_fields
         assert 'H4' in list_fields
         assert 'D1' in list_fields
         assert 'D8' in list_fields
+
         assert len(list_fields) == 14
 
     def test_rook_list_moves_with_bad_parameter(self):

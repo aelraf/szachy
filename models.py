@@ -144,7 +144,7 @@ def moves_down(x: int, y: int, fields=None) -> list:
 def moves_horizontal(x: int, y: int, p1: int, p2: int, fields=None) -> list:
     list_moves = []
     try:
-        for i in range(8):
+        for i in range(1, 8):
             if 1 <= x + p1 * i <= 8 and 1 <= y <= 8:
                 print('ruch wieży prawo-lewo (w zależności czy p1 = 1, czy p1 = -1, ewentualnie 0 - bez ruchu)')
                 if fields is not None and fields[(x-1 + p1 * i) + (y-1)*8].is_empty:
@@ -166,7 +166,7 @@ def moves_vertical(x: int, y: int, p1: int, p2: int, fields=None) -> list:
     list_moves = []
 
     try:
-        for i in range(8):
+        for i in range(1, 8):
             if 1 <= x <= 8 and 1 <= y + p2 * i <= 8:
                 print('ruch wieży góra-dół (w zależności czy p2 = 1, czy p2 = -1, ewentualnie 0 - bez ruchu)')
                 if fields is not None and fields[(x-1) + ((y - 1) + p2 * i)* 8].is_empty:
@@ -307,10 +307,10 @@ class Rook(Figure):
 
         print("początkowa lokalizacja wieży: {}, {}".format(x, y))
         try:
-            list_moves += moves_left(x=x, y=y, fields=fields)
-            list_moves += moves_right(x=x, y=y, fields=fields)
-            list_moves += moves_down(x=x, y=y, fields=fields)
-            list_moves += moves_up(x=x, y=y, fields=fields)
+            list_moves += moves_horizontal(x=x, y=y, p1=-1, p2=0, fields=fields)
+            list_moves += moves_horizontal(x=x, y=y, p1=1, p2=0, fields=fields)
+            list_moves += moves_vertical(x=x, y=y, p1=0, p2=-1, fields=fields)
+            list_moves += moves_vertical(x=x, y=y, p1=0, p2=1, fields=fields)
 
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
