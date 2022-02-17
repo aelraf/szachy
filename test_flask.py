@@ -12,45 +12,47 @@ class TestAbortMethods:
     def test_abort_if_field_exist(self):
         field = 'A1'
 
-        abort = abort_if_field_doesnt_exist(field=field)
+        abort, message = abort_if_field_doesnt_exist(field=field)
         assert abort != 409
+        assert abort == 200
+        assert message is None
 
     def test_abort_if_field_doesnt_exist(self):
         field = 'U1'
 
-        with pytest.raises(HTTPException):
-            abort = abort_if_field_doesnt_exist(field=field)
-            assert abort == 409
+        abort, message = abort_if_field_doesnt_exist(field=field)
+        assert abort == 409
+        assert message == 'Field does not exist.'
 
     def test_abort_if_number_to_big(self):
         field = 'A99'
-        with pytest.raises(HTTPException):
-            abort = abort_if_field_doesnt_exist(field=field)
-            assert abort == 409
+
+        abort, message = abort_if_field_doesnt_exist(field=field)
+        assert abort == 409
+        assert message == 'Field does not exist.'
 
     def test_abort_if_number_to_small(self):
         field = 'A-9'
-        with pytest.raises(HTTPException):
-            abort = abort_if_field_doesnt_exist(field=field)
-            assert abort == 409
+        # with pytest.raises(HTTPException):
+        abort, message = abort_if_field_doesnt_exist(field=field)
+        assert abort == 409
+        assert message == 'Field does not exist.'
 
-            # def abort_if_figure_doesnt_exist(figure: str):
-            #     figures = {'king', 'queen', 'bishop', 'knight', 'rook', 'pawn'}
-            #     if figure not in figures:
-            #         abort(404, message="Bad figures.")
     def test_abort_figure_exist(self):
         figure = 'king'
 
-        abort = abort_if_figure_doesnt_exist(figure=figure)
+        abort, message = abort_if_figure_doesnt_exist(figure=figure)
         assert abort != 404
-        assert abort is None
+        assert abort == 200
+        assert message is None
 
     def test_abort_figure_doesnt_exist(self):
         figure = 'pope'
 
-        with pytest.raises(HTTPException):
-            abort = abort_if_figure_doesnt_exist(figure=figure)
-            assert abort == 404
+        # with pytest.raises(HTTPException):
+        abort, message = abort_if_figure_doesnt_exist(figure=figure)
+        assert abort == 404
+        assert message == "Bad figures."
 
     def test_change_to_number(self):
         letter = 'B'
@@ -72,17 +74,33 @@ class TestChessMove:
             url = '/api/v1/' + figure + '/' + field
             print('URL: {}'.format(url))
             response = client.get(url)
-            print('response:')
-            print(response.status_code)
-            print(response.json)
             assert response.status_code == 200
-            assert response.status_code == 402
+
+            assert 'H1' in response.get_json()['availableMoves']
+            assert 'H8' in response.get_json()['availableMoves']
+            assert 'A8' in response.get_json()['availableMoves']
 
     def test_get_move_bad_figure(self):
-        pass
+        figure = 'pope'
+        field = 'A1'
+
+        with app.test_client() as client:
+            url = '/api/v1/' + figure + '/' + field
+            print('URL: {}'.format(url))
+            response = client.get(url)
+            print(response.json)
+            assert response.status_code == 404
 
     def test_get_move_bad_field(self):
-        pass
+        figure = 'king'
+        field = 'Z9'
+
+        with app.test_client() as client:
+            url = '/api/v1/' + figure + '/' + field
+            print('URL: {}'.format(url))
+            response = client.get(url)
+            print(response.json)
+            assert response.status_code == 409
 
     def test_get_move_bad_both(self):
         pass
