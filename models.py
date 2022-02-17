@@ -60,137 +60,13 @@ class Figure(abc.ABC):
         pass
 
 
-# def moves_left(x: int, y: int, fields=None) -> list:
-#     list_moves = []
-#
-#     try:
-#         for i in range(x - 1, 0, -1):
-#             if 1 <= i <= 8 and 1 <= y <= 8:
-#                 print("ruchy wieży w lewo: {} {}".format(i, y))
-#                 if fields is not None and fields[i + y * 8].is_empty:
-#                     list_moves.append(Field(i, y))
-#                 elif fields is None:
-#                     list_moves.append(Field(i, y))
-#                 elif fields is not None and not fields[i + y * 8].is_empty:
-#                     break
-#         # list_moves += moves_line(x=x, y=y, p1=x-1, p2=0, p3=-1, p4=0, p5=1)
-#     except IndexError as err:
-#         print('moves_left - Index Error: {}'.format(err))
-#         raise IndexError
-#
-#     return list_moves
-#
-#
-# def moves_right(x: int, y: int, fields=None) -> list:
-#     list_moves = []
-#
-#     try:
-#         for i in range(x + 1, 9):
-#             if 1 <= i <= 8 and 1 <= y <= 8:
-#                 print("ruchy wieży w prawo: {} {}".format(i, y))
-#                 if fields is not None and fields[i + y * 8].is_empty:
-#                     list_moves.append(Field(i, y))
-#                 elif fields is None:
-#                     list_moves.append(Field(i, y))
-#                 elif fields is not None and not fields[i + y * 8].is_empty:
-#                     break
-#     except IndexError as err:
-#         print('moves_right - Index Error: {}'.format(err))
-#         raise IndexError
-#
-#     return list_moves
-#
-#
-# def moves_up(x: int, y: int, fields=None) -> list:
-#     list_moves = []
-#
-#     try:
-#         for j in range(y + 1, 9):
-#             if 1 <= x <= 8 and 1 <= j <= 8:
-#                 print("ruchy wieży w górę: {} {}".format(x, j))
-#                 if fields is not None and fields[x + j * 8].is_empty:
-#                     list_moves.append(Field(x, j))
-#                 elif fields is None:
-#                     list_moves.append(Field(x, j))
-#                 elif fields is not None and not fields[x + j * 8].is_empty:
-#                     break
-#     except IndexError as err:
-#         print('moves_up - Index Error: {}'.format(err))
-#         raise IndexError
-#
-#     return list_moves
-#
-#
-# def moves_down(x: int, y: int, fields=None) -> list:
-#     list_moves = []
-#
-#     try:
-#         for j in range(y - 1, 0, -1):
-#             if 1 <= x <= 8 and 1 <= j <= 8:
-#                 print("ruchy wieży w dół: {} {}".format(x, j))
-#                 if fields is not None and fields[x + j * 8].is_empty:
-#                     list_moves.append(Field(x, j))
-#                 elif fields is None:
-#                     list_moves.append(Field(x, j))
-#                 elif fields is not None and not fields[x + j * 8].is_empty:
-#                     break
-#     except IndexError as err:
-#         print('moves_down - Index Error: {}'.format(err))
-#         raise IndexError
-#
-#     return list_moves
-
-
-def moves_horizontal(x: int, y: int, p1: int, p2: int, fields=None) -> list:
-    list_moves = []
-    try:
-        for i in range(1, 8):
-            if 1 <= x + p1 * i <= 8 and 1 <= y <= 8:
-                print('ruch wieży prawo-lewo (w zależności czy p1 = 1, czy p1 = -1, ewentualnie 0 - bez ruchu)')
-                if fields is not None and fields[(x-1 + p1 * i) + (y-1)*8].is_empty:
-                    list_moves.append(Field(x + p1 * i, y))
-                elif fields is None:
-                    list_moves.append(Field(x + p1 * i, y))
-                elif fields is not None and not fields[(x-1 + p1 * i) + (y-1)*8].is_empty:
-                    break
-            else:
-                break
-    except IndexError as err:
-        print('moves_down - Index Error: {}'.format(err))
-        raise IndexError
-
-    return list_moves
-
-
-def moves_vertical(x: int, y: int, p1: int, p2: int, fields=None) -> list:
-    list_moves = []
-
-    try:
-        for i in range(1, 8):
-            if 1 <= x <= 8 and 1 <= y + p2 * i <= 8:
-                print('ruch wieży góra-dół (w zależności czy p2 = 1, czy p2 = -1, ewentualnie 0 - bez ruchu)')
-                if fields is not None and fields[(x-1) + ((y - 1) + p2 * i)* 8].is_empty:
-                    list_moves.append(Field(x, y + p2 * i))
-                elif fields is None:
-                    list_moves.append(Field(x, y + p2 * i))
-                elif fields is not None and not fields[(x-1) + ((y - 1) + p2 * i)* 8].is_empty:
-                    break
-            else:
-                break
-    except IndexError as err:
-        print('moves_down - Index Error: {}'.format(err))
-        raise IndexError
-
-    return list_moves
-
-
 def moves_line(x: int, y: int, p1: int, p2: int, fields=None) -> list:
     """
     x i y to współrzędne sprawdzanego punku,
     p1 pilnuje x (-1 = lewo, 1 = prawo, 0 = góra-dół)
     p2 pilnuje y (-1 = dół, 1 = góra, 0 = prawo-lewo)
 
-    zwraca listę możliwych do osiągnięcia pól
+    zwraca listę możliwych do osiągnięcia pól z prostych
     """
 
     list_moves = []
@@ -221,7 +97,7 @@ def moves_oblique(x: int, y: int, p1: int, p2: int, fields=None) -> list:
     p1 - znak przy przesuwaniu y
     p2 - znak przy przesuwaniu x
 
-    :return: listę pól osiągalnych ze startowego
+    :return: listę pól osiągalnych ze startowego po skosach
     """
     list_moves = []
 
@@ -314,10 +190,10 @@ class Rook(Figure):
 
         print("początkowa lokalizacja wieży: {}, {}".format(x, y))
         try:
-            list_moves += moves_horizontal(x=x, y=y, p1=-1, p2=0, fields=fields)
-            list_moves += moves_horizontal(x=x, y=y, p1=1, p2=0, fields=fields)
-            list_moves += moves_vertical(x=x, y=y, p1=0, p2=-1, fields=fields)
-            list_moves += moves_vertical(x=x, y=y, p1=0, p2=1, fields=fields)
+            list_moves += moves_line(x=x, y=y, p1=-1, p2=0, fields=fields)
+            list_moves += moves_line(x=x, y=y, p1=1, p2=0, fields=fields)
+            list_moves += moves_line(x=x, y=y, p1=0, p2=-1, fields=fields)
+            list_moves += moves_line(x=x, y=y, p1=0, p2=1, fields=fields)
 
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
