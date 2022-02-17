@@ -157,7 +157,7 @@ class King(Figure):
         moves = self.list_available_moves(fields=fields)
 
         for move in moves:
-            if move.field_name == dest_field.field_name:
+            if move == dest_field.field_name:
                 return True
         return False
 
@@ -197,7 +197,7 @@ class Queen(Figure):
         moves = self.list_available_moves(fields=fields)
 
         for move in moves:
-            if move.field_name == dest_field.field_name:
+            if move == dest_field.field_name:
                 return True
         return False
 
@@ -231,7 +231,7 @@ class Rook(Figure):
         moves = self.list_available_moves(fields=fields)
 
         for move in moves:
-            if move.field_name == dest_field.field_name:
+            if move == dest_field.field_name:
                 return True
         return False
 
@@ -265,7 +265,7 @@ class Bishop(Figure):
         moves = self.list_available_moves(fields=fields)
 
         for move in moves:
-            if move.field_name == dest_field.field_name:
+            if move == dest_field.field_name:
                 return True
         return False
 
@@ -311,7 +311,7 @@ class Knight(Figure):
         moves = self.list_available_moves(fields=fields)
 
         for move in moves:
-            if move.field_name == dest_field.field_name:
+            if move == dest_field.field_name:
                 return True
         return False
 
@@ -351,6 +351,6 @@ class Pawn(Figure):
         moves = self.list_available_moves(fields=fields)
 
         for move in moves:
-            if move.field_name == dest_field.field_name:
+            if move == dest_field.field_name:
                 return True
         return False
