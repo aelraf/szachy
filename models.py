@@ -141,11 +141,56 @@ def moves_down(x: int, y: int, fields=None) -> list:
     return list_moves
 
 
+def moves_horizontal(x: int, y: int, p1: int, p2: int, fields=None) -> list:
+    list_moves = []
+    try:
+        for i in range(8):
+            if 1 <= x + p1 * i <= 8 and 1 <= y <= 8:
+                print('ruch wieży prawo-lewo (w zależności czy p1 = 1, czy p1 = -1, ewentualnie 0 - bez ruchu)')
+                if fields is not None and fields[(x-1 + p1 * i) + (y-1)*8].is_empty:
+                    list_moves.append(Field(x + p1 * i, y))
+                elif fields is None:
+                    list_moves.append(Field(x + p1 * i, y))
+                elif fields is not None and not fields[(x-1 + p1 * i) + (y-1)*8].is_empty:
+                    break
+            else:
+                break
+    except IndexError as err:
+        print('moves_down - Index Error: {}'.format(err))
+        raise IndexError
+
+    return list_moves
+
+
+def moves_vertical(x: int, y: int, p1: int, p2: int, fields=None) -> list:
+    list_moves = []
+
+    try:
+        for i in range(8):
+            if 1 <= x <= 8 and 1 <= y + p2 * i <= 8:
+                print('ruch wieży góra-dół (w zależności czy p2 = 1, czy p2 = -1, ewentualnie 0 - bez ruchu)')
+                if fields is not None and fields[(x-1) + ((y - 1) + p2 * i)* 8].is_empty:
+                    list_moves.append(Field(x, y + p2 * i))
+                elif fields is None:
+                    list_moves.append(Field(x, y + p2 * i))
+                elif fields is not None and not fields[(x-1) + ((y - 1) + p2 * i)* 8].is_empty:
+                    break
+            else:
+                break
+    except IndexError as err:
+        print('moves_down - Index Error: {}'.format(err))
+        raise IndexError
+
+    return list_moves
+
+
 def moves_line(x: int, y: int, p1: int, p2: int, p3: int, p4: int, p5: int, fields=None) -> list:
     """
-    x i y to współrzędne sprawdzanego punku, p1 pilnuje początku pętli,
-    p2 jej końca, a p3 kroku iteracji,
-    p4 i p5 przyjmują wartości {-1, 0, 1}, kontrolując przebieg x i y
+    x i y to współrzędne sprawdzanego punku,
+    p1 pilnuje x (-1 = lewo, 1 = prawo, 0 = góra-dół)
+    p2 pilnuje y (-1 = dół, 1 = góra, 0 = prawo-lewo)
+
+    zwraca listę możliwych do osiągnięcia pól
     """
 
     list_moves = []
@@ -154,12 +199,7 @@ def moves_line(x: int, y: int, p1: int, p2: int, p3: int, p4: int, p5: int, fiel
         for i in range(p1, p2, p3):
             if 1 <= x <= 8 and 1 <= i <= 8:
                 print("ruchy wieży w górę: {} {}".format(x + p4 * i, y + p5 * i))
-                if fields is not None and fields[x + i * 8].is_empty:
-                    list_moves.append(Field(x + p4 * i, y + p5 * i))
-                elif fields is None:
-                    list_moves.append(Field(x + p4 * i, y + p5 * i))
-                elif fields is not None and not fields[x * p4 + y * p5 + i * 8].is_empty:
-                    break
+
     except IndexError as err:
         print('moves_up - Index Error: {}'.format(err))
         raise IndexError
