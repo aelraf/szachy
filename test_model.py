@@ -3,7 +3,7 @@
 
 import pytest
 
-from .models import Field, King, Pawn, Rook, Bishop, Queen
+from .models import Field, King, Pawn, Rook, Bishop, Queen, Knight
 
 
 def get_starting_chessboard(fields: list[Field]) -> list:
@@ -669,4 +669,98 @@ class TestModelQueen:
         field = Field(34, 34, is_empty=False)
 
         assert not queen.validate_move(dest_field=field)
+
+
+class TestModelKnight:
+    def get_knight(self, x: int, y: int) -> Knight:
+        return Knight(Field(x=x, y=y, is_empty=False, figure_code=3))
+
+    def test_knight_init(self):
+        knight = self.get_knight(2, 1)
+
+        assert knight.value == 3
+        assert not knight.field.is_empty
+        assert knight.field.field_name == "A2"
+
+    def test_knight_available_moves(self):
+        knight = self.get_knight(4, 1)
+
+        list_moves = knight.list_available_moves()
+        assert list_moves != []
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'A3' not in list_fields
+        assert 'B1' in list_fields
+        assert 'C2' in list_fields
+        assert 'C4' in list_fields
+        assert 'B5' in list_fields
+
+        assert len(list_fields) == 4
+
+    def test_knight_available_moves_in_corner(self):
+        knight = self.get_knight(8, 8)
+        list_moves = knight.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'H8' not in list_fields
+        assert 'G6' in list_fields
+        assert 'F7' in list_fields
+
+        assert len(list_fields) == 2
+
+    def test_knight_available_moves_on_middle(self):
+        knight = self.get_knight(4, 4)
+        list_moves = knight.list_available_moves()
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'D4' not in list_fields
+        assert 'E2' in list_fields
+        assert 'F3' in list_fields
+        assert 'E6' in list_fields
+        assert 'C6' in list_fields
+        assert 'B3' in list_fields
+        assert 'B5' in list_fields
+        assert 'C2' in list_fields
+        assert 'F5' in list_fields
+        assert len(list_fields) == 8
+
+    def test_knight_list_moves_with_bad_parameter(self):
+        knight = self.get_knight(2, 1)
+        fieldset = [Field(4, 1, is_empty=False), Field(6, 1, is_empty=False)]
+
+        with pytest.raises(IndexError):
+            knight.list_available_moves(fields=fieldset)
+
+    def test_knight_list_moves_with_good_parameter(self):
+        knight = self.get_knight(2, 1)
+        fieldset = get_starting_chessboard(get_fieldset())
+
+        list_moves = knight.list_available_moves(fields=fieldset)
+        assert list_moves != []
+
+        list_fields = []
+        for field in list_moves:
+            list_fields.append(field.field_name)
+
+        assert 'A2' not in list_fields
+        assert 'C1' in list_fields
+        assert 'C3' in list_fields
+
+        assert len(list_fields) == 2
+
+    def test_knight_validate_move_good_field(self):
+        knight = self.get_knight(2, 1)
+        field = Field(3, 3, is_empty=True)
+
+        assert knight.validate_move(dest_field=field)
+
 
