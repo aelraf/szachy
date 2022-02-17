@@ -74,7 +74,7 @@ def moves_line(x: int, y: int, p1: int, p2: int, fields=None) -> list:
     try:
         for i in range(1, 8):
             if 1 <= x + p1 * i <= 8 and 1 <= y + p2 * i <= 8:
-                print("ruchy figury po prostych: {} {}".format(x + p1 * i, y + p2 * i))
+                # print("ruchy figury po prostych: {} {}".format(x + p1 * i, y + p2 * i))
                 if fields is not None and fields[(x-1 + p1*i) + ((y-1) + p2*i) * 8].is_empty:
                     list_moves.append(Field(x + p1 * i, y + p2 * i))
                 elif fields is None:
@@ -84,7 +84,7 @@ def moves_line(x: int, y: int, p1: int, p2: int, fields=None) -> list:
             else:
                 break
     except IndexError as err:
-        print('moves_up - Index Error: {}'.format(err))
+        print('moves_line - Index Error: {}'.format(err))
         raise IndexError
 
     return list_moves
@@ -105,7 +105,7 @@ def moves_oblique(x: int, y: int, p1: int, p2: int, fields=None) -> list:
         for i in range(1, 8):
             yk = y + p1 * i
             xk = x + p2 * i
-            print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
+            # print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
             if 1 <= xk <= 8 and 1 <= yk <= 8:
                 if fields is not None and fields[(xk-1) + (yk-1) * 8].is_empty:
                     list_moves.append(Field(xk, yk))
@@ -113,7 +113,7 @@ def moves_oblique(x: int, y: int, p1: int, p2: int, fields=None) -> list:
                     list_moves.append(Field(xk, yk))
                 elif fields is not None and not fields[(xk-1) + (yk-1) * 8].is_empty:
                     break
-            if xk < 1 or yk < 1:
+            else:
                 break
     except IndexError as err:
         print('list_available_moves - Index Error: {}'.format(err))
@@ -164,6 +164,30 @@ class Queen(Figure):
 
     def list_available_moves(self, fields=None) -> list:
         list_moves = []
+
+        x = self.field.x
+        y = self.field.y
+
+        try:
+            print('skosy: ')
+            list_moves += moves_oblique(x=x, y=y, p1=1, p2=-1, fields=fields)
+            list_moves += moves_oblique(x=x, y=y, p1=1, p2=1, fields=fields)
+            list_moves += moves_oblique(x=x, y=y, p1=-1, p2=-1, fields=fields)
+            list_moves += moves_oblique(x=x, y=y, p1=-1, p2=1, fields=fields)
+            for move in list_moves:
+                print(move.field_name)
+            print('proste: ')
+            list_moves += moves_line(x=x, y=y, p1=-1, p2=0, fields=fields)
+            list_moves += moves_line(x=x, y=y, p1=1, p2=0, fields=fields)
+            list_moves += moves_line(x=x, y=y, p1=0, p2=-1, fields=fields)
+            list_moves += moves_line(x=x, y=y, p1=0, p2=1, fields=fields)
+            for move in list_moves:
+                print(move.field_name)
+
+        except IndexError as err:
+            print('list_available_moves - Index Error: {}'.format(err))
+            raise IndexError
+
         return list_moves
 
     def validate_move(self, dest_field: Field, fields=None) -> bool:
@@ -188,7 +212,6 @@ class Rook(Figure):
         x = self.field.x
         y = self.field.y
 
-        print("początkowa lokalizacja wieży: {}, {}".format(x, y))
         try:
             list_moves += moves_line(x=x, y=y, p1=-1, p2=0, fields=fields)
             list_moves += moves_line(x=x, y=y, p1=1, p2=0, fields=fields)
@@ -198,9 +221,6 @@ class Rook(Figure):
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
             raise IndexError
-
-        for move in list_moves:
-            print(move.field_name)
 
         return list_moves
 
@@ -228,20 +248,13 @@ class Bishop(Figure):
         y = self.field.y
 
         try:
-            print('lewo góra: ')
             list_moves += moves_oblique(x=x, y=y, p1=1, p2=-1, fields=fields)
-            print("prawo góra: ")
             list_moves += moves_oblique(x=x, y=y, p1=1, p2=1, fields=fields)
-            print('lewo dół: ')
             list_moves += moves_oblique(x=x, y=y, p1=-1, p2=-1, fields=fields)
-            print('prawo dół: ')
             list_moves += moves_oblique(x=x, y=y, p1=-1, p2=1, fields=fields)
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
             raise IndexError
-
-        for move in list_moves:
-            print(move.field_name)
 
         return list_moves
 
