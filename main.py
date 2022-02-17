@@ -5,49 +5,30 @@ app = Flask(__name__)
 api = Api(app)
 
 
-names = {
-    'tim': {"age": 19, "gender": 'male'},
-    'bill': {"age": 70, "gender": 'male'}
-}
+def abort_if_field_doesnt_exist(field: str):
+    letters = {'A': 1, 'B': 2, 'C': 3, 'D': 4, "E": 5, "F": 6, 'G': 7, 'H': 8}
+    if field[0] not in letters or int(field[1]) > 8 or int(field[1]) < 1:
+        abort(409, message="Field does not exist.")
 
 
-class HelloWorld(Resource):
-    def get(self, name, test=0):
-        return names[name]
-
-    def post(self):
-        return {'data': "Posted"}
+def abort_if_figure_doesnt_exist(figure: str):
+    figures = {'king', 'queen', 'bishop', 'knight', 'rook', 'pawn'}
+    if figure not in figures:
+        abort(404, message="Bad figures.")
 
 
-video_put_args = reqparse.RequestParser()
-video_put_args.add_argument("name", type=str, help="Name of the video is required", required=True)
-video_put_args.add_argument("views", type=int, help="Views of the video", required=True)
-video_put_args.add_argument("likes", type=int, help="Likes on the video", required=True)
+class ChessMove(Resource):
+    def get(self):
+        pass
 
 
-videos = {}
+class ChessCheck(Resource):
+    def get(self):
+        pass
 
 
-def abort_if_video_doesnt_exist(video_id):
-    if video_id not in videos:
-        abort(404, message="Video id is not valid...")
-
-
-class Video(Resource):
-    def get(self, video_id: int):
-        abort_if_video_doesnt_exist(video_id)
-        return videos[video_id]
-
-    def put(self, video_id: int):
-        args = video_put_args.parse_args()
-        videos[video_id] = args
-        # return {video_id: args}
-        return videos[video_id], 201
-
-
-# api.add_resource(HelloWorld, "/helloworld/<string:name>/<int:test>")
-api.add_resource(HelloWorld, "/helloworld/<string:name>")
-api.add_resource(Video, "/video/<int:video_id>")
+api.add_resource(ChessMove, "/api/v1/<str:figure>/<str:current_field>")
+api.add_resource(ChessCheck, "/api/v1/<str:figure>/<str:current_field>/<str:dest_field>")
 
 
 if __name__ == "__main__":
