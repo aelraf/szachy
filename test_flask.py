@@ -65,7 +65,18 @@ class TestAbortMethods:
 
 class TestChessMove:
     def test_get_ok(self):
-        pass
+        figure = 'queen'
+        field = 'A1'
+
+        with app.test_client() as client:
+            url = '/api/v1/' + figure + '/' + field
+            print('URL: {}'.format(url))
+            response = client.get(url)
+            print('response:')
+            print(response.status_code)
+            print(response.json)
+            assert response.status_code == 200
+            assert response.status_code == 402
 
     def test_get_move_bad_figure(self):
         pass

@@ -61,7 +61,7 @@ class Figure(abc.ABC):
         pass
 
 
-def moves_line(x: int, y: int, p1: int, p2: int, fields: List[Field] = None) -> list:
+def moves_line(x: int, y: int, p1: int, p2: int, fields= None) -> list:
     """
     x i y to współrzędne sprawdzanego punku,
     p1 pilnuje x (-1 = lewo, 1 = prawo, 0 = góra-dół)
@@ -86,11 +86,14 @@ def moves_line(x: int, y: int, p1: int, p2: int, fields: List[Field] = None) -> 
     except IndexError as err:
         print('moves_line - Index Error: {}'.format(err))
         raise IndexError
+    except TypeError as err:
+        print('moves_line: TypeError: {}'.format(err))
+        raise TypeError
 
     return list_moves
 
 
-def moves_oblique(x: int, y: int, p1: int, p2: int, fields: List[Field] = None) -> list:
+def moves_oblique(x: int, y: int, p1: int, p2: int, fields= None) -> list:
     """
     wszystkie ruchy skośne w jednej metodzie
 
@@ -115,8 +118,11 @@ def moves_oblique(x: int, y: int, p1: int, p2: int, fields: List[Field] = None) 
             else:
                 break
     except IndexError as err:
-        print('list_available_moves - Index Error: {}'.format(err))
+        print('moves_oblique - Index Error: {}'.format(err))
         raise IndexError
+    except TypeError as err:
+        print('moves_oblique: TypeError: {}'.format(err))
+        raise TypeError
 
     return list_moves
 
@@ -161,7 +167,7 @@ class Queen(Figure):
         super().__init__(field)
         self.value = 10
 
-    def list_available_moves(self, fields: List[Field] = None) -> list:
+    def list_available_moves(self, fields= None) -> list:
         list_moves = []
 
         x = self.field.x

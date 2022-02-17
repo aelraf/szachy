@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_restful import Api, Resource, reqparse, abort
 
 from .models import Field, King, Queen, Bishop, Knight, Rook, Pawn
@@ -35,8 +35,8 @@ class ChessMove(Resource):
         error = abort_if_field_doesnt_exist(field=current_field)
         error = abort_if_figure_doesnt_exist(figure=figure)
 
-        field = Field(int(current_field[1]), change_to_numbers(current_field[0]))
-
+        field = Field(int(current_field[1]), change_to_numbers(current_field[0]), is_empty=False)
+        print(field.field_name)
         dict = {
             'king': King(field),
             'queen': Queen(field),
@@ -47,14 +47,22 @@ class ChessMove(Resource):
         }
 
         checking_figure = dict.get(figure, '')
-        available_moves = checking_figure.list_available_moves(field)
+        field.figure_code = checking_figure.value
 
-        return jsonify({
-            'availableMoves': available_moves,
+        print('GET - figura: {}, pole: {},sprawdzane: {}'.format(
+            checking_figure.value,
+            checking_figure.field.field_name,
+            field.field_name)
+        )
+
+        available_moves = checking_figure.list_available_moves()
+
+        return make_response(jsonify({
+            'availableMoves': [available_moves],
             'error': error,
             'figure': figure,
             'currentField': current_field
-        })
+        }))
 
 
 class ChessCheck(Resource):
