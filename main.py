@@ -7,7 +7,7 @@ api = Api(app)
 
 def abort_if_field_doesnt_exist(field: str):
     letters = {'A': 1, 'B': 2, 'C': 3, 'D': 4, "E": 5, "F": 6, 'G': 7, 'H': 8}
-    if field[0] not in letters or int(field[1]) > 8 or int(field[1]) < 1:
+    if field[0] not in letters or int(field[1:]) > 8 or int(field[1:]) < 1:
         abort(409, message="Field does not exist.")
 
 
@@ -18,17 +18,18 @@ def abort_if_figure_doesnt_exist(figure: str):
 
 
 class ChessMove(Resource):
-    def get(self):
-        pass
+    def get(self, figure: str, current_field: str):
+        abort_if_field_doesnt_exist(field=current_field)
+        abort_if_figure_doesnt_exist(figure=figure)
 
 
 class ChessCheck(Resource):
-    def get(self):
+    def get(self, figure: str, current_field: str, dest_field: str):
         pass
 
 
-api.add_resource(ChessMove, "/api/v1/<str:figure>/<str:current_field>")
-api.add_resource(ChessCheck, "/api/v1/<str:figure>/<str:current_field>/<str:dest_field>")
+api.add_resource(ChessMove, "/api/v1/<string:figure>/<string:current_field>")
+api.add_resource(ChessCheck, "/api/v1/<string:figure>/<string:current_field>/<string:dest_field>")
 
 
 if __name__ == "__main__":

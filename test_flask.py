@@ -5,7 +5,7 @@ import pytest
 from werkzeug.exceptions import HTTPException
 
 from .models import Field, King, Pawn, Rook, Bishop, Queen, Knight
-from .main import abort_if_field_doesnt_exist, abort_if_figure_doesnt_exist, app
+from .main import abort_if_field_doesnt_exist, abort_if_figure_doesnt_exist, app, change_to_numbers
 
 
 class TestAbortMethods:
@@ -51,6 +51,16 @@ class TestAbortMethods:
         with pytest.raises(HTTPException):
             abort = abort_if_figure_doesnt_exist(figure=figure)
             assert abort == 404
+
+    def test_change_to_number(self):
+        letter = 'B'
+        digit = change_to_numbers(letter)
+
+        assert digit == 2
+
+        letter = 'Z'
+        with pytest.raises(KeyError):
+            change_to_numbers(letter)
 
 
 class TestChessMove:
