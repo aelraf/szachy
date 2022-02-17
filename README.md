@@ -26,7 +26,7 @@ Uwaga - uwzględniamy tylko sekwencje poruszania, bez bicia!
 8) formatowanie z wykorzystaniem Black + sprawdzenie linterem flake8
 
 # To do
-- algorytm poruszania się Skoczka, Gońca i Hetmana
+- algorytm poruszania się Skoczka
 - API wystawiające URLe
 - instrukcja uruchomienia
 - formatowanie z wykorzystaniem Black

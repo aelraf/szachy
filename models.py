@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import abc
+from typing import List
 
 
 class Field:
@@ -60,7 +61,7 @@ class Figure(abc.ABC):
         pass
 
 
-def moves_line(x: int, y: int, p1: int, p2: int, fields=None) -> list:
+def moves_line(x: int, y: int, p1: int, p2: int, fields: List[Field] = None) -> list:
     """
     x i y to współrzędne sprawdzanego punku,
     p1 pilnuje x (-1 = lewo, 1 = prawo, 0 = góra-dół)
@@ -74,7 +75,6 @@ def moves_line(x: int, y: int, p1: int, p2: int, fields=None) -> list:
     try:
         for i in range(1, 8):
             if 1 <= x + p1 * i <= 8 and 1 <= y + p2 * i <= 8:
-                # print("ruchy figury po prostych: {} {}".format(x + p1 * i, y + p2 * i))
                 if fields is not None and fields[(x-1 + p1*i) + ((y-1) + p2*i) * 8].is_empty:
                     list_moves.append(Field(x + p1 * i, y + p2 * i))
                 elif fields is None:
@@ -90,7 +90,7 @@ def moves_line(x: int, y: int, p1: int, p2: int, fields=None) -> list:
     return list_moves
 
 
-def moves_oblique(x: int, y: int, p1: int, p2: int, fields=None) -> list:
+def moves_oblique(x: int, y: int, p1: int, p2: int, fields: List[Field] = None) -> list:
     """
     wszystkie ruchy skośne w jednej metodzie
 
@@ -105,7 +105,6 @@ def moves_oblique(x: int, y: int, p1: int, p2: int, fields=None) -> list:
         for i in range(1, 8):
             yk = y + p1 * i
             xk = x + p2 * i
-            # print("i: {}, xk: {}, yk: {}".format(i, xk, yk))
             if 1 <= xk <= 8 and 1 <= yk <= 8:
                 if fields is not None and fields[(xk-1) + (yk-1) * 8].is_empty:
                     list_moves.append(Field(xk, yk))
@@ -127,7 +126,7 @@ class King(Figure):
         super().__init__(field)
         self.value = 100
 
-    def list_available_moves(self, fields=None) -> list:
+    def list_available_moves(self, fields: List[Field] = None) -> list:
         list_moves = []
         x = self.field.x
         y = self.field.y
@@ -145,7 +144,7 @@ class King(Figure):
 
         return list_moves
 
-    def validate_move(self, dest_field: Field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields: List[Field] = None) -> bool:
         if not dest_field.is_empty:
             return False
 
@@ -162,27 +161,22 @@ class Queen(Figure):
         super().__init__(field)
         self.value = 10
 
-    def list_available_moves(self, fields=None) -> list:
+    def list_available_moves(self, fields: List[Field] = None) -> list:
         list_moves = []
 
         x = self.field.x
         y = self.field.y
 
         try:
-            print('skosy: ')
             list_moves += moves_oblique(x=x, y=y, p1=1, p2=-1, fields=fields)
             list_moves += moves_oblique(x=x, y=y, p1=1, p2=1, fields=fields)
             list_moves += moves_oblique(x=x, y=y, p1=-1, p2=-1, fields=fields)
             list_moves += moves_oblique(x=x, y=y, p1=-1, p2=1, fields=fields)
-            for move in list_moves:
-                print(move.field_name)
-            print('proste: ')
+
             list_moves += moves_line(x=x, y=y, p1=-1, p2=0, fields=fields)
             list_moves += moves_line(x=x, y=y, p1=1, p2=0, fields=fields)
             list_moves += moves_line(x=x, y=y, p1=0, p2=-1, fields=fields)
             list_moves += moves_line(x=x, y=y, p1=0, p2=1, fields=fields)
-            for move in list_moves:
-                print(move.field_name)
 
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
@@ -190,7 +184,7 @@ class Queen(Figure):
 
         return list_moves
 
-    def validate_move(self, dest_field: Field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields: List[Field] = None) -> bool:
         if not dest_field.is_empty:
             return False
 
@@ -207,7 +201,7 @@ class Rook(Figure):
         super().__init__(field)
         self.value = 5
 
-    def list_available_moves(self, fields=None) -> list:
+    def list_available_moves(self, fields: List[Field] = None) -> list:
         list_moves = []
         x = self.field.x
         y = self.field.y
@@ -224,7 +218,7 @@ class Rook(Figure):
 
         return list_moves
 
-    def validate_move(self, dest_field: Field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields: List[Field] = None) -> bool:
         if not dest_field.is_empty:
             return False
 
@@ -241,7 +235,7 @@ class Bishop(Figure):
         super().__init__(field)
         self.value = 4
 
-    def list_available_moves(self, fields=None) -> list:
+    def list_available_moves(self, fields: List[Field] = None) -> list:
         list_moves = []
 
         x = self.field.x
@@ -258,7 +252,7 @@ class Bishop(Figure):
 
         return list_moves
 
-    def validate_move(self, dest_field: Field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields: List[Field] = None) -> bool:
         if not dest_field.is_empty:
             return False
 
@@ -275,12 +269,12 @@ class Knight(Figure):
         super().__init__(field)
         self.value = 3
 
-    def list_available_moves(self, fields=None) -> list:
+    def list_available_moves(self, fields: List[Field] = None) -> list:
         list_moves = []
 
         return list_moves
 
-    def validate_move(self, dest_field: Field, fields=None) -> bool:
+    def validate_move(self, dest_field: Field, fields: List[Field] = None) -> bool:
         if not dest_field.is_empty:
             return False
 
