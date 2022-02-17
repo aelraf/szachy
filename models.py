@@ -76,9 +76,9 @@ def moves_line(x: int, y: int, p1: int, p2: int, fields= None) -> list:
         for i in range(1, 8):
             if 1 <= x + p1 * i <= 8 and 1 <= y + p2 * i <= 8:
                 if fields is not None and fields[(x-1 + p1*i) + ((y-1) + p2*i) * 8].is_empty:
-                    list_moves.append(Field(x + p1 * i, y + p2 * i))
+                    list_moves.append(Field(x + p1 * i, y + p2 * i).field_name)
                 elif fields is None:
-                    list_moves.append(Field(x + p1 * i, y + p2 * i))
+                    list_moves.append(Field(x + p1 * i, y + p2 * i).field_name)
                 elif fields is not None and not fields[(x-1 + p1*i) + ((y - 1) + p2 * i) * 8].is_empty:
                     break
             else:
@@ -110,9 +110,9 @@ def moves_oblique(x: int, y: int, p1: int, p2: int, fields= None) -> list:
             xk = x + p2 * i
             if 1 <= xk <= 8 and 1 <= yk <= 8:
                 if fields is not None and fields[(xk-1) + (yk-1) * 8].is_empty:
-                    list_moves.append(Field(xk, yk))
+                    list_moves.append(Field(xk, yk).field_name)
                 elif fields is None:
-                    list_moves.append(Field(xk, yk))
+                    list_moves.append(Field(xk, yk).field_name)
                 elif fields is not None and not fields[(xk-1) + (yk-1) * 8].is_empty:
                     break
             else:
@@ -141,9 +141,9 @@ class King(Figure):
                 if 1 <= i <= 8 and 1 <= j <= 8 and (i != x or j != y):
                     try:
                         if fields is not None and fields[i + j*8].is_empty:
-                            list_moves.append(Field(i, j))
+                            list_moves.append(Field(i, j).field_name)
                         elif fields is None:
-                            list_moves.append(Field(i, j))
+                            list_moves.append(Field(i, j).field_name)
                     except IndexError as err:
                         print('list_available_moves - Index Error: {}'.format(err))
                         raise IndexError
@@ -286,17 +286,17 @@ class Knight(Figure):
                 for iy in range(-2, 3, 4):
                     if 0 < x + ix < 9 and 0 < y + iy < 9:
                         if fields is not None and fields[x-1 + ix + (y-1+iy) * 8].is_empty:
-                            list_moves.append(Field(x + ix, y + iy))
+                            list_moves.append(Field(x + ix, y + iy).field_name)
                         elif fields is None:
-                            list_moves.append(Field(x + ix, y + iy))
+                            list_moves.append(Field(x + ix, y + iy).field_name)
 
             for ix in range(-2, 3, 4):
                 for iy in range(-1, 2, 2):
                     if 0 < x + ix < 9 and 0 < y + iy < 9:
                         if fields is not None and fields[x-1 + ix + (y-1+iy) * 8].is_empty:
-                            list_moves.append(Field(x + ix, y + iy))
+                            list_moves.append(Field(x + ix, y + iy).field_name)
                         elif fields is None:
-                            list_moves.append(Field(x + ix, y + iy))
+                            list_moves.append(Field(x + ix, y + iy).field_name)
 
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
@@ -330,14 +330,14 @@ class Pawn(Figure):
             if 0 < x <= 8 and 0 < y < 8:
                 if not self.field.is_black:
                     if fields is not None and fields[x + (y + 1) * 8].is_empty:
-                        list_moves.append(Field(x, y + 1))
+                        list_moves.append(Field(x, y + 1).field_name)
                     elif fields is None:
-                        list_moves.append(Field(x, y + 1))
+                        list_moves.append(Field(x, y + 1).field_name)
                 else:
                     if fields is not None and fields[x + (y - 1) * 8].is_empty:
-                        list_moves.append(Field(x, y - 1))
+                        list_moves.append(Field(x, y - 1).field_name)
                     elif fields is None:
-                        list_moves.append(Field(x, y - 1))
+                        list_moves.append(Field(x, y - 1).field_name)
         except IndexError as err:
             print('list_available_moves - Index Error: {}'.format(err))
             raise IndexError
