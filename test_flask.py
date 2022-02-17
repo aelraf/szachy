@@ -134,7 +134,7 @@ class TestChessCheck:
             response = client.get(url)
             assert response.status_code == 200
 
-            assert response.get_json()['move'] != 'valid'
+            assert response.get_json()['move'] == 'valid'
 
     def test_get_check_bad_figure(self):
         figure = 'pope'
@@ -160,7 +160,7 @@ class TestChessCheck:
             print('URL: {}'.format(url))
             response = client.get(url)
             print(response.json)
-            assert response.status_code == 404
+            assert response.status_code == 409
 
             assert response.get_json()['move'] == 'invalid'
 
@@ -174,7 +174,7 @@ class TestChessCheck:
             print('URL: {}'.format(url))
             response = client.get(url)
             print(response.json)
-            assert response.status_code == 404
+            assert response.status_code == 200
 
             assert response.get_json()['move'] == 'invalid'
 
