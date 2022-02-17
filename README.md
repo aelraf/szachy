@@ -1,7 +1,18 @@
 # szachy
 Prosta aplikacja RESTowa wspomagająca grę w szachy.
 
-# Opis:
+# instrukcja
+Zaimplementowane widoki obsługują dwa zapytania:
+- [GET] `/api/v1/{chess-figure}/{current-field}`
+- [GET] `/api/v1/{chess-figure}/{current-field}/{dest-field}`
+gdzie {chess-figure} to nazwa figury szachowej w języku angielskim pisana z małej litery,
+  {current-field} to pole, na którym nasza figura stoi, a {dest-field} to pole, którego osiągalność chcemy sprawdzić.
+
+Nazwy pól podajemy drukowanymi literami.
+
+Zakładamy (zgodnie z poniższym opisem), że nie ma na planszy żadnych innych figur - aczkolwiek silnik sprawdzania ruchów uwzględnia taką możliwość, tylko byłaby potrzebna implementacja odpowiedniego widoku, przekazującego aktualny stan planszy.
+
+# Opis projektu:
 1) klasa abstrkacyjna Figure, posiadająca:
   - kontruktor, przyjmujący jako pierwszy parametr pole, na którym znajduje się figura
   - metodę publiczną 'list_available_moves()', wypisującą dozwolone ruchy z zajmowanego miejsca
@@ -24,13 +35,6 @@ Uwaga - uwzględniamy tylko sekwencje poruszania, bez bicia!
 7) testy jednostkowe 
 
 8) formatowanie z wykorzystaniem Black + sprawdzenie linterem flake8
-
-# To do
-- algorytm poruszania się Skoczka
-- API wystawiające URLe
-- instrukcja uruchomienia
-- formatowanie z wykorzystaniem Black
-- sprawdzenie linterem flake8
 
 
 # Uwaga:
